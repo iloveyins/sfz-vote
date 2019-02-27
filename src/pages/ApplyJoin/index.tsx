@@ -66,9 +66,6 @@ class ApplyJoin extends React.Component<IProps, IState>{
         this.state = {
             header: this.header
         };
-
-
-
     }
 
     render() {
@@ -77,11 +74,9 @@ class ApplyJoin extends React.Component<IProps, IState>{
             totalPage: 21,
             paging: (obj) => {
                 // this.props.setLoading(true);
-
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
                 // }, 3000)
-
                 console.log(obj)
             }
         }
