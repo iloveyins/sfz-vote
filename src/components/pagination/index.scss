@@ -1,0 +1,54 @@
+@import "../../index.scss";
+.main {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.page {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  li {
+    float: left;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #e6e6e6;
+    font-size: 10px;
+    text-align: center;
+    line-height: 15px;
+    color: #333;
+    cursor: pointer;
+    &:first-of-type,
+    &:last-of-type {
+      width: auto;
+      padding: 0 5px;
+    }
+    &:first-of-type {
+      margin-right: 10px;
+    }
+    &:last-of-type {
+      margin-left: 10px;
+    }
+    &::selection {
+      background-color: transparent;
+    }
+  }
+}
+
+.active {
+  color: #fff !important;
+  background: #54b0bd;
+  border-color: #54b0bd !important;
+}
+
+.ellipsis {
+  border: none !important;
+  margin: 0 10px;
+  cursor: default !important;
+}
+
+.nomore {
+  color: #b5b5b5 !important;
+}
