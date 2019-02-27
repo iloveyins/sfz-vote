@@ -9,7 +9,7 @@ react + react-router + axios + mobx + mobx-react + antd-mobile
 ```
 react-vote/
    |
-   ├──icons/                    * 用到的icon
+   ├──icons/                    * 用到的icon图标
    |
    ├──components/               * 可复用组件
    │
