@@ -21,7 +21,6 @@
       text-align: center;
       font-size: px2rem(38px);
       line-height: px2rem(82px);
-      background-image: url(../../static/images/button@3x.png);
       background-size: 100% 100%;
       position: absolute;
       bottom: px2rem(10px);
@@ -36,25 +35,65 @@
   .list {
     width: 100%;
     padding-top: px2rem(60px);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
     .list-item {
+      display: inline-block;
+      box-sizing: border-box;
       width: px2rem(320px);
       height: px2rem(463px);
       border-radius: px2rem(10px);
       border: solid px2rem(4px) #e7d360;
-      display: inline-block;
-      margin: px2rem(20px) px2rem(15px);
+      margin: px2rem(29px) px2rem(15px) px2rem(0px) px2rem(38px);
     }
-    // .list-item:nth-child(2n+1) {
-    //     width: px2rem(320px);
-    //     height: px2rem(463px);
-    //     border-radius: px2rem(10px);
-    //     border: solid px2rem(4px) #e7d360;
-    //     display: inline-block;
-    //     //   margin: px2rem(40px) px2rem(15px) 0 px2rem(36px);
-    // }
+    .list-item:nth-child(even) {
+      box-sizing: border-box;
+      display: inline-block;
+      width: px2rem(320px);
+      height: px2rem(463px);
+      border-radius: px2rem(10px);
+      border: solid px2rem(4px) #e7d360;
+      margin: px2rem(29px) px2rem(32px) px2rem(0px) px2rem(15px);
+    }
+    .item-content {
+      padding: px2rem(19px) px2rem(20px);
+    }
+    .item-img {
+      width: 100%;
+      height: px2rem(281px);
+      position: relative;
+      img {
+        width: 100%;
+        height: px2rem(281px);
+      }
+      .item-title {
+        width: px2rem(90px);
+        height: px2rem(42px);
+        background-color: #a429f3;
+        border-radius: 0px 20.5px 20.5px 0px;
+        font-size: px2rem(26px);
+        color: #ffffff;
+        line-height: 20px;
+        position: absolute;
+        top: 0;
+      }
+    }
+    .ticket-number {
+      color: #ffffff;
+      font-size: px2rem(26px);
+      display: flex;
+      justify-content: space-between;
+      margin: px2rem(19px) 0 px2rem(26px) 0;
+    }
+    .btn-vote {
+      width: px2rem(218px);
+      height: px2rem(65px);
+      display: block;
+      background-color: #fd7327;
+      border-radius: px2rem(32px);
+      font-size: px2rem(28px);
+      color: #ffffff;
+      text-align: center;
+      line-height: px2rem(65px);
+      margin: 0 auto;
+    }
   }
 }
