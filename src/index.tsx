@@ -7,7 +7,6 @@ import 'antd-mobile/dist/antd-mobile.css';
 
 import Home from './pages/Home/index';
 import Apply from './pages/Apply/index';
-import KnowledgeDetails from './pages/KnowledgeDetails/index';
 import ApplyJoin from './pages/ApplyJoin/index';
 
 import * as serviceWorker from './serviceWorker';
@@ -23,7 +22,6 @@ ReactDOM.render(
             <div>
                 <Route exact path="/" component={Home}></Route>
                 <Route path="/Apply" component={Apply}></Route>
-                <Route path="/details" component={KnowledgeDetails}></Route>
                 <Route path="/applyJoin" component={ApplyJoin}></Route>
             </div>
         </HashRouter>

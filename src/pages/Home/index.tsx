@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.scss';
+import VoteList from './components/vote-list/index';
 
 interface Iprops {
 
@@ -13,6 +14,13 @@ class Home extends React.Component<Iprops>{
         super(props);
     }
     render() {
+        const voteData = [{
+            number: 0,
+            vote: 0,
+            ranking: 1,
+            img: '../../../../static/images/banner.png'
+        }]
+
         return (
             <div id="home">
                 <div className="me-vote">
@@ -20,11 +28,7 @@ class Home extends React.Component<Iprops>{
                     <a href="#">我要报名</a>
                 </div>
                 <div className="list">
-                    <div className="list-item">
-
-                    </div>
-
-
+                    <VoteList />
                 </div>
             </div>
         )
