@@ -3,6 +3,8 @@ import './index.scss';
 
 import VoteList from './components/vote-list/index'
 
+import { Pagination } from '../../components/index';
+
 interface Iprops {
 
 }
@@ -15,6 +17,50 @@ class Home extends React.Component<Iprops>{
         super(props);
     }
     render() {
+        const data = {
+            data: [
+                {
+                    number: 12,
+                    vote: 0,
+                    ranking: 1,
+                    img: '../../../../static/images/banner.png'
+                },
+                {
+                    number: 23,
+                    vote: 0,
+                    ranking: 1,
+                    img: '../../../../static/images/banner.png'
+                },
+                {
+                    number: 23,
+                    vote: 0,
+                    ranking: 1,
+                    img: '../../../../static/images/banner.png'
+                },
+                {
+                    number: 23,
+                    vote: 0,
+                    ranking: 1,
+                    img: '../../../../static/images/banner.png'
+                },
+                {
+                    number: 23,
+                    vote: 0,
+                    ranking: 1,
+                    img: '../../../../static/images/banner.png'
+                }
+            ]
+        }
+        const pages = {
+            totalPage: 4,
+            paging: (obj) => {
+                // this.props.setLoading(true);
+                // setTimeout(() => {
+                //     this.props.setLoading(false);
+                // }, 3000)
+                console.log(obj)
+            }
+        }
         return (
             <div id="home">
                 <div className="me-vote">
@@ -22,25 +68,14 @@ class Home extends React.Component<Iprops>{
                     <a href="#">我要报名</a>
                 </div>
                 <div className="list">
-
-                    <div className="list-item">
-                        <div className="item-content">
-                            <div className="item-img">
-                                <img alt="" src={require('../../static/images/banner.png')} />
-                                <div className="item-title">Top</div>
-                            </div>
-                            <div className="ticket-number">
-                                <span>001号</span>
-                                <span>006票</span>
-                            </div>
-                            <a className="btn-vote" onClick={() => {
-
-                            }}>
-                                为TA投票
-                </a>
-                        </div>
+                    <VoteList {...data} />
+                </div>
+                <Pagination  {...pages} />
+                <div className="activity-rules">
+                    <div className="activity-rules-header">
+                        <img src={require("../../static/images/frame@3x.png")} alt="" />
+                        <span className="text">活动规则</span>
                     </div>
-
                 </div>
             </div>
         )

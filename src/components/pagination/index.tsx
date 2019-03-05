@@ -25,9 +25,9 @@ export default class Pagination extends Component<IProps, IState> {
 
         this.state = {
             pageCurr: 1,
-            groupCount: 3,
+            groupCount: 2,
             startPage: 1,
-            playCount: 5,
+            playCount: 4,
             pageCount: 10
         }
 

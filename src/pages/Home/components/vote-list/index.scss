@@ -64,3 +64,49 @@
   line-height: px2rem(65px);
   margin: 0 auto;
 }
+
+.item-content {
+  padding: px2rem(19px) px2rem(20px);
+}
+
+.item-img {
+  width: 100%;
+  height: px2rem(281px);
+  position: relative;
+  img {
+    width: 100%;
+    height: px2rem(281px);
+  }
+  .item-title {
+    width: px2rem(90px);
+    height: px2rem(42px);
+    background-color: #a429f3;
+    border-radius: 0px 20.5px 20.5px 0px;
+    font-size: px2rem(26px);
+    color: #ffffff;
+    line-height: 20px;
+    position: absolute;
+    top: 0;
+  }
+}
+
+.ticket-number {
+  color: #ffffff;
+  font-size: px2rem(26px);
+  display: flex;
+  justify-content: space-between;
+  margin: px2rem(19px) 0 px2rem(26px) 0;
+}
+
+.btn-vote {
+  width: px2rem(218px);
+  height: px2rem(65px);
+  display: block;
+  background-color: #fd7327;
+  border-radius: px2rem(32px);
+  font-size: px2rem(28px);
+  color: #ffffff;
+  text-align: center;
+  line-height: px2rem(65px);
+  margin: 0 auto;
+}
