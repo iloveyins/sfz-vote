@@ -1,0 +1,30 @@
+@import "../../index.scss";
+.knowledge-details {
+    font-family: PingFangSC;
+    color: rgba(64, 40, 1, 1);
+    font-size: px2rem(28px);
+    font-weight: 400;
+     ::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 1);
+        z-index: -100;
+    }
+    .detail-background {
+        overflow: hidden;
+        width: px2rem(710px);
+        height: px2rem(1152px);
+        margin: px2rem(12px) auto;
+        background-color: rgba(255, 207, 95, 1);
+        .detial-top {
+            width: px2rem(682px);
+            height: px2rem(772px);
+            background: rgba(255, 255, 255, 1);
+            margin: px2rem(7px) auto;
+        }
+    }
+}
