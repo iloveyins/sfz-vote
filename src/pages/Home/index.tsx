@@ -14,7 +14,6 @@ interface IState {
 class Home extends React.Component<Iprops>{
     constructor(props: Iprops) {
         super(props);
-        var s = F.parseURL().params.code;
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.10fangzhou.com&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
         // window.location.href = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx615e5ac092e9c376&secret=bc59c09b8e4e4483b33e880778a95654&code=CODE&grant_type=authorization_code";
     }
