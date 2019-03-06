@@ -1,25 +1,26 @@
-body {
-  margin: 0;
-  padding: 0; // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-  //   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-  //   sans-serif;
-  // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
-  font-family: "PingFangSC-Medium";
+body,
+p {
+    margin: 0;
+    padding: 0; // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    //   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    //   sans-serif;
+    // -webkit-font-smoothing: antialiased;
+    // -moz-osx-font-smoothing: grayscale;
+    font-family: "PingFangSC-Medium";
 }
 
 //基于视觉稿横屏尺寸/100得出的基准font-size  (750px/100)
 $browser-default-font-size: 75px !default; //变量的值可以根据自己需求定义
 html {
-  font-size: $browser-default-font-size;
+    font-size: $browser-default-font-size;
 }
 
 #root {
-  max-width: 1024px;
-  margin: 0 auto;
+    max-width: 1024px;
+    margin: 0 auto;
 }
 
 @function px2rem($px) {
-  //$px为需要转换的字号
-  @return ($px) / $browser-default-font-size * 1rem;
+    //$px为需要转换的字号
+    @return ($px) / $browser-default-font-size * 1rem;
 }
