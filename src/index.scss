@@ -19,6 +19,15 @@ html {
   margin: 0 auto;
 }
 
+.sign-up .my-radio .am-radio {
+  padding: 0.5px !important;
+}
+
+.am-radio-inner:after {
+  width: 5px;
+  height: 13px;
+}
+
 @function px2rem($px) {
   //$px为需要转换的字号
   @return ($px) / $browser-default-font-size * 1rem;
