@@ -4,7 +4,6 @@ import './index.scss';
 import VoteList from './components/vote-list/index'
 
 import { Pagination } from '../../components/index';
-
 interface Iprops {
 
 }
@@ -76,6 +75,11 @@ class Home extends React.Component<Iprops>{
                         <img src={require("../../static/images/frame@3x.png")} alt="" />
                         <span className="text">活动规则</span>
                     </div>
+                    <p>
+                        1、费用包含大赛报名费、团队组织费和保险等团队活动费用<br /><br />
+                        2、费用包含大赛报名费、团队组织费和保险等团队活动费用<br /><br />
+                        3、费用包含大赛报名费、团队组织费和保险等团队活动费用<br />
+                    </p>
                 </div>
             </div>
         )

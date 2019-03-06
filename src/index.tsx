@@ -9,7 +9,7 @@ import Home from './pages/Home/index';
 import Apply from './pages/Apply/index';
 import KnowledgeDetails from './pages/KnowledgeDetails/index';
 import ApplyJoin from './pages/ApplyJoin/index';
-import dialog from './components/votingdialog/index';
+import SignUp from './pages/SignUp/index';
 
 import * as serviceWorker from './serviceWorker';
 import { HashRouter, Route } from 'react-router-dom';
@@ -26,6 +26,7 @@ ReactDOM.render(
                 <Route path="/Apply" component={Apply}></Route>
                 <Route path="/details" component={KnowledgeDetails}></Route>
                 <Route path="/applyJoin" component={ApplyJoin}></Route>
+                <Route path="/signUp" component={SignUp}></Route>
             </div>
         </HashRouter>
         {/* <Router /> */}

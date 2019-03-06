@@ -46,6 +46,11 @@
     color: #ffffff;
     margin-top: px2rem(115px);
     margin-bottom: px2rem(224px);
+    p {
+      font-size: px2rem(26px);
+      padding: 10px 13px;
+      color: #e7d360;
+    }
     .activity-rules-header {
       display: flex;
       flex-direction: column;
