@@ -8,6 +8,8 @@ import Team from './components/Team/index'
 
 
 
+
+
 interface IProps {
 
 }
@@ -25,15 +27,23 @@ class SignUp extends React.Component<IProps>{
         multiple: false,
         isTeam: 0
     };
+
     onChange = (isTeam) => {
         this.setState({ isTeam });
     };
+
     onValueChange = (...args) => {
         console.log(args);
     };
+
     onErrorClick() {
 
     }
+
+    onStatus = (ref) => {
+
+    }
+
     constructor(props: IProps) {
         super(props);
     }
@@ -43,6 +53,9 @@ class SignUp extends React.Component<IProps>{
             { value: 0, label: '个人' },
             { value: 1, label: '团队' },
         ];
+
+
+
         return (
             <div className="sign-up">
                 <img className="sign-up-img" src={require("../../static/images/banner.png")} />
@@ -69,7 +82,7 @@ class SignUp extends React.Component<IProps>{
                             3、费用包含大赛报名费、团队组织费和保险等团队活动费用<br />
                         </p>
                     </div>
-                    <div className="sign-btn">
+                    <div className="sign-btn" onClick={this.onStatus}>
                         立即报名
                     </div>
                 </div>

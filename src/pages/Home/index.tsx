@@ -4,6 +4,7 @@ import './index.scss';
 import VoteList from './components/vote-list/index'
 
 import { Pagination } from '../../components/index';
+import { wxInit } from '../../utils/wxShare.js'
 interface Iprops {
 
 }
@@ -12,11 +13,31 @@ interface IState {
 }
 
 class Home extends React.Component<Iprops>{
+
     constructor(props: Iprops) {
         super(props);
-        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.10fangzhou.com&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
-        // window.location.href = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx615e5ac092e9c376&secret=bc59c09b8e4e4483b33e880778a95654&code=CODE&grant_type=authorization_code";
+
+        // const title = "注册十方舟，领取20元新用户红包",
+        //     desc =
+        //         "成为十方舟用户，立即领取20元知识红包，到十方舟找到适合自己的知识短视频。",
+        //     imgUrl = require("../assets/img/shortvideo/logo.png");
+        // wxInit(title, window.location.href, imgUrl, desc);
+
+        // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.10fangzhou.com&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+
+        //@ts-ignore
+        var code = F.parseURL().params.code;
+        alert(code);
+
+        //window.location.href = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx615e5ac092e9c376&secret=bc59c09b8e4e4483b33e880778a95654&code=CODE&grant_type=authorization_code";
     }
+
+    getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
     render() {
         const data = {
             data: [
@@ -52,6 +73,7 @@ class Home extends React.Component<Iprops>{
                 }
             ]
         }
+
         const pages = {
             totalPage: 4,
             paging: (obj) => {
@@ -62,6 +84,7 @@ class Home extends React.Component<Iprops>{
                 console.log(obj)
             }
         }
+
         return (
             <div id="home">
                 <div className="me-vote">

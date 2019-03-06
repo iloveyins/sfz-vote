@@ -77,9 +77,10 @@ class ApplyJoin extends React.Component<IProps, IState>{
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
                 // }, 3000)
-                console.log(obj)
+                console.log(obj);
             }
         }
+
         return (
             <div id="apply-join">
 
