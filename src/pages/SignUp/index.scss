@@ -24,35 +24,6 @@
     border-radius: 50%;
     margin-right: 5px;
   }
-  .content-item {
-    margin: px2rem(78px) 0px;
-    .cover-lable {
-      font-size: px2rem(28px);
-    }
-    .cover {
-      position: relative;
-      .text {
-        font-size: px2rem(28px);
-        position: absolute;
-        top: 30px;
-        left: px2rem(400px);
-      }
-      .cover-file {
-      }
-    }
-  }
-  .code {
-    display: flex;
-    justify-content: space-between;
-    .code-text {
-      font-size: px2rem(28px);
-      color: #5b76fd;
-      width: px2rem(220px);
-      line-height: px2rem(74px);
-      margin-left: 10px;
-      text-decoration: underline;
-    }
-  }
   .activity-price {
     color: #f80a20;
     font-size: px2rem(42px);
@@ -105,9 +76,11 @@
   }
   .am-list-item .am-list-line .am-list-content {
     color: #ffffff;
-    
   }
   .am-list-item .am-input-label {
+    color: #ffffff;
+  }
+  .am-list-item .am-input-control input {
     color: #ffffff;
   }
 }
