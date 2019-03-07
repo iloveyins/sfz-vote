@@ -1,20 +1,78 @@
 @import "../../index.scss";
-
 #apply {
-  background-color: #ffffff;
-  height: 100vh;
-  .apply-bg {
-    height: px2rem(218.5px);
-    width: 100%;
-    background-image: url("../../static/images/apply/apply-bg.png");
-    background-size: 100% 100%;
-  }
-  .apply-content {
-    background-color: #ffffff;
-    height: px2rem(354px);
-    width: 75%;
-    margin: px2rem(-100px) auto;
-    box-shadow: 0px 0px px2rem(15.4px) px2rem(4.6px) rgba(255, 166, 129, 0.3);
-    border-radius: px2rem(10px);
-  }
+    color: rgba(255, 255, 255, 1);
+    font-family: PingFangSC;
+    font-size: px2rem(28px);
+    .apply-wrap {
+        background-color: rgba(0, 0, 0, 1);
+        .apply-money {
+            overflow: hidden;
+            height: px2rem(324px);
+            margin: 0 px2rem(40px);
+            border-bottom: dashed px2rem(2px) rgba(255, 255, 255, 0.3);
+            .money-count {
+                display: flex;
+                justify-content: space-between;
+                margin: px2rem(40px) 0;
+                .money-quota {
+                    text-align: center;
+                    height: px2rem(230px);
+                    width: px2rem(230px);
+                    background-size: 100% 100%;
+                    background-image: url("../../static/images/money-bg.png");
+                    p:first-child {
+                        margin: 0 px2rem(15px);
+                        padding: px2rem(50px) 0 px2rem(30px) 0;
+                        border-bottom: dashed px2rem(2px) rgba(253, 204, 150, 1);
+                    }
+                    p:last-child {
+                        font-size: px2rem(40px);
+                        margin-top: px2rem(31px);
+                    }
+                }
+                .money-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    align-items: center;
+                    .money-text {
+                        margin-top: px2rem(25px);
+                        p:last-child {
+                            margin-top: px2rem(10px);
+                        }
+                    }
+                    .pay-button {
+                        text-align: center;
+                        font-size: px2rem(26px);
+                        width: px2rem(174px);
+                        height: px2rem(58px);
+                        line-height: px2rem(58px);
+                        background: rgba(253, 115, 39, 1);
+                        border-radius: px2rem(29px);
+                    }
+                }
+            }
+        }
+        .introduct {
+            font-size: px2rem(24px);
+            margin: 0 px2rem(40px);
+            padding-top: px2rem(42px);
+            color: #E7D360;
+            p {
+                letter-spacing: px2rem(2px);
+                margin-bottom: px2rem(15px)
+            }
+        }
+    }
+}
+
+#apply::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 1);
+    z-index: -100;
 }

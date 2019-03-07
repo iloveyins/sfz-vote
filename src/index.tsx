@@ -10,7 +10,6 @@ import Apply from './pages/Apply/index';
 import KnowledgeDetails from './pages/KnowledgeDetails/index';
 import ApplyJoin from './pages/ApplyJoin/index';
 import SignUp from './pages/SignUp/index';
-
 import * as serviceWorker from './serviceWorker';
 import { HashRouter, Route } from 'react-router-dom';
 
