@@ -2,7 +2,7 @@
 import React from 'react';
 // import {Toast}  from '../../componets/index';
 import './index.scss';
-import Votingdialog from '../../components/votingdialog/index'
+// import VotingDialog from '../../components/votingdialog/index'
 
 export interface IProps {
     name: string;
@@ -36,7 +36,7 @@ export default class Apply extends React.Component<IProps, IState> {
         return (
             <div id="apply">
                 {
-                    this.state.isAlert ? <Votingdialog {...data} /> : ""
+                    // this.state.isAlert ? <VotingDialog {...data} /> : ""
                 }
                 <div className="apply-wrap">
                     <div className="apply-money">

@@ -6,41 +6,40 @@ configure({ enforceActions: "observed" })
 
 
 class Home {
-    @observable messages = [];
-    @observable messageCount = 0;
+    @observable listData = []
 
-    @action.bound
-
-    async getList(obj: { pageSize: number, pageNumber: number }) {
-
-        var fd = new FormData()
-
-        let config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+    @action.bound  //获取列表
+    async getList(obj: { pageSize: number, pageNumber: number, tid: string }) {
+        const { data } = await axios.post(
+            "commonh/enteryList",
+            {
+                page: {
+                    pageSize: obj.pageSize,
+                    pageNumber: obj.pageNumber
+                },
+                tid: obj.tid
             }
-        }
-
-        const s = axios({
-            url: "common/videoSharePlay",
-            method: 'post',
-            data: Qs.stringify({
-                data: { vid: "asdf" }
-            }),
-
-        })
-
-        // const { data } = await axios.post(`common/videoSharePlay`,
-
-        //     config
-        // );
-
+        )
         runInAction(() => {
-            // this.messageCount = data.data;
-            // console.log(data)
-            this.messageCount = 333;
+            this.listData = data;
         });
     }
+
+
+    @action.bound  //code
+    async officLogin(obj: { code: string }) {
+        const { data } = await axios.post(
+            "commonh/officLogin",
+            {
+                code: obj.code
+            }
+        )
+        runInAction(() => {
+            this.listData = data;
+        });
+    }
+
+
 }
 
 export default new Home();

@@ -3,6 +3,8 @@ import { withRouter } from "react-router-dom";
 import './index.scss';
 import VoteDetails from '../../../voteDetails/index';
 
+import { observer, inject } from 'mobx-react'
+
 interface IProps {
     data: any,
     onWithRouter(obj: object): void
@@ -42,4 +44,5 @@ const VoteList = (props: IProps) => {
     )
 }
 
-export default VoteList;
+export default inject((obj) => ({
+}))(observer(VoteList));

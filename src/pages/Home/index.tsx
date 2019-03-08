@@ -7,31 +7,43 @@ import { wxInit } from '../../utils/wxShare.js';
 import { inject, observer } from 'mobx-react';
 
 interface IProps extends RouteComponentProps {
-    getList(obj: { pageSize: number, pageNumber: number }): void
+    getList(obj: { pageSize: number, pageNumber: number, tid: string }): void,
+    listData: [],
+    officLogin(obj: object): void
 }
+
 interface IState {
 
 }
+
 @inject(({ home, status }) => ({
     loading: status.loading,
     setLoading: status.setLoading,
-    getList: home.getList
-
+    getList: home.getList,
+    officLogin: home.officLogin,
+    listData: home.listData,
 }))
 
 @observer
-class Home extends React.Component<IProps>{
-    constructor(props: IProps) {
-        super(props);
+class Home extends React.Component<IProps, IState>{
+    constructor(props: IProps, context: IState) {
+        super(props, context);
 
-        // const title = "注册十方舟，领取20元新用户红包",
-        //     desc =
-        //         "成为十方舟用户，立即领取20元知识红包，到十方舟找到适合自己的知识短视频。",
-        //     imgUrl = require("../assets/img/shortvideo/logo.png");
-        // wxInit(title, window.location.href, imgUrl, desc);
+        this.state = {
+            listData: [],
+            onWithRouter: (obj: object) => {
+                this.props.history.push('details');
+            },
+        }
 
-        this.props.getList({ pageSize: 10, pageNumber: 1 })
+        this.getList();
+
         this.weChatAuthorized();
+    }
+
+    async getList() {
+        console.log(this.props.listData)
+        await this.props.getList({ pageSize: 10, pageNumber: 1, tid: '22472da731a9404abb4001723da73ab9' });
     }
 
     getQueryString(name) {
@@ -49,44 +61,13 @@ class Home extends React.Component<IProps>{
             //window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.nihaotime.com/voting&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
         } else {
             //传入code
-            alert(code)
+            this.props.officLogin({ code })
         }
     }
 
     render() {
         const data = {
-            data: [
-                {
-                    number: 12,
-                    vote: 0,
-                    ranking: 1,
-                    img: '../../../../static/images/banner.png'
-                },
-                {
-                    number: 23,
-                    vote: 0,
-                    ranking: 1,
-                    img: '../../../../static/images/banner.png'
-                },
-                {
-                    number: 23,
-                    vote: 0,
-                    ranking: 1,
-                    img: '../../../../static/images/banner.png'
-                },
-                {
-                    number: 23,
-                    vote: 0,
-                    ranking: 1,
-                    img: '../../../../static/images/banner.png'
-                },
-                {
-                    number: 23,
-                    vote: 0,
-                    ranking: 1,
-                    img: '../../../../static/images/banner.png'
-                }
-            ],
+            data: [],
             onWithRouter: (obj: object) => {
                 console.log(obj)
                 this.props.history.push('details');

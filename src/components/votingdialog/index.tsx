@@ -8,7 +8,7 @@ interface IProps {
     content: string,
     onBugCount(): void
 }
-export default class Votingdialog extends Component<IProps> {
+export default class VotingDialog extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props);
     }
@@ -29,7 +29,6 @@ export default class Votingdialog extends Component<IProps> {
                                         <img src={require(shareImg)} />
                                     </div> : ""
                             }
-
                             <div className="detial-footer">
                                 <span onClick={onBugCount}>购买投票次数</span>
                                 <span>分享拉票</span>
@@ -40,4 +39,4 @@ export default class Votingdialog extends Component<IProps> {
             </div >
         )
     }
-}   
+}

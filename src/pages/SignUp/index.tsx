@@ -18,6 +18,7 @@ interface IProps {
     loading: status.loading,
     setLoading: status.setLoading
 }))
+
 @observer
 class SignUp extends React.Component<IProps>{
 
