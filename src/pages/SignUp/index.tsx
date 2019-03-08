@@ -51,7 +51,8 @@ class SignUp extends React.Component<IProps>{
     }
 
     //提交报名
-    onSubmmit = (ref) => {
+    onSubmmit() {
+        console.log(this.state.fromData)
         this.props.postSignUp(this.state.fromData);
     }
 
@@ -127,7 +128,7 @@ class SignUp extends React.Component<IProps>{
                     </div>
                     <button
                         className={`sign-btn ${this.state.isError ? 'sign-btn-ok' : ''}`}
-                        disabled={!this.state.isError}
+                        // disabled={!this.state.isError}
                         onClick={this.onSubmmit}>
                         立即报名
                     </button>

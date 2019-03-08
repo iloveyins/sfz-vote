@@ -10,9 +10,10 @@ class signUp {
     @action.bound
     //提交报名
     async postSignUp(obj: Object) {
-        const { data } = await axios.get(`businessh/entrying`);
+        const { data } = await axios.post(`businessh/entrying`, obj);
         runInAction(() => {
-            // this.messageCount = data.data;
+            alert("d")
+            console.log(data);
         });
     }
 

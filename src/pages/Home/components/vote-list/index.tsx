@@ -9,6 +9,7 @@ interface IProps {
     data: any,
     onWithRouter(obj: object): void
 }
+
 const VoteList = (props: IProps) => {
 
     const { data, onWithRouter } = props;
@@ -20,8 +21,10 @@ const VoteList = (props: IProps) => {
 
     return (
         data.map((item) => (
-            <div className="list-item" onClick={() => {
+            <div className="list-item" key={item.id} onClick={(e) => {
+
                 onWithRouter(item);
+                e.stopPropagation();
             }}>
 
                 <div className="item-content">
@@ -30,11 +33,11 @@ const VoteList = (props: IProps) => {
                         <div className="item-title">Top{item.ranking}</div>
                     </div>
                     <div className="ticket-number">
-                        <span>{item.number}号</span>
-                        <span>006票</span>
+                        <span>{item.id}号</span>
+                        <span>{item.voteNum}票</span>
                     </div>
-                    <a className="btn-vote" onClick={() => {
-
+                    <a className="btn-vote" onClick={(e) => {
+                        e.stopPropagation();
                     }}>
                         为TA投票
                 </a>
@@ -43,6 +46,7 @@ const VoteList = (props: IProps) => {
         ))
     )
 }
-
-export default inject((obj) => ({
+ 
+export default inject(({ home, status }) => ({
+    data: home.listData,
 }))(observer(VoteList));

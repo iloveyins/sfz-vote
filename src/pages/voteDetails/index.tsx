@@ -2,20 +2,27 @@
 import React, { Component } from 'react';
 import './index.scss';
 import Paydialog from '../Apply/index'
+import { observer, inject } from 'mobx-react'
+
 export interface IProps {
-    detial: object;
-    show: boolean;
+    detial: object,
+    show: boolean,
+    itemData: [],
 }
+
 export interface IState {
     isAlert: boolean
 }
-export default class VoteDetails extends Component<IProps, IState> {
+
+
+class VoteDetails extends Component<IProps, IState> {
 
     constructor(props: IProps, context: IState) {
         super(props, context);
         this.state = {
             isAlert: false
         }
+
     }
 
     render() {
@@ -45,6 +52,7 @@ export default class VoteDetails extends Component<IProps, IState> {
                 self.setState({ isAlert: false })
             }
         }
+        const { itemData } = this.props;
         return (
             <div className="knowledge-details">
                 <div className="detail-background">
@@ -99,4 +107,8 @@ export default class VoteDetails extends Component<IProps, IState> {
             </div>
         )
     }
-}   
+}
+
+export default inject(({ home, status }) => ({
+    data: home.itemData,
+}))(observer(VoteDetails));

@@ -1,9 +1,7 @@
 
 import React from 'react';
-import { Radio, Picker, InputItem, List, DatePicker, ImagePicker } from 'antd-mobile';
+import { Radio, Picker, InputItem, List, ImagePicker } from 'antd-mobile';
 import './index.scss';
-import { number } from 'prop-types';
-import { values } from 'mobx';
 
 interface IProps {
     onStatusError({ errorStatus: boolean, fromData: { } }): void,  //回调方法
@@ -60,7 +58,6 @@ export default class Personal extends React.Component<IProps, IState> {
     }
 
     onChange = (value) => {
-        console.log(value);
         this.setState({ value });
     };
     onValueChange = (...args) => {

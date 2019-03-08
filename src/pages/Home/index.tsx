@@ -9,7 +9,8 @@ import { inject, observer } from 'mobx-react';
 interface IProps extends RouteComponentProps {
     getList(obj: { pageSize: number, pageNumber: number, tid: string }): void,
     listData: [],
-    officLogin(obj: object): void
+    officLogin(obj: object): void,
+    itemInfo(tid: string): void,
 }
 
 interface IState {
@@ -21,7 +22,7 @@ interface IState {
     setLoading: status.setLoading,
     getList: home.getList,
     officLogin: home.officLogin,
-    listData: home.listData,
+    itemInfo: home.itemInfo
 }))
 
 @observer
@@ -36,14 +37,22 @@ class Home extends React.Component<IProps, IState>{
             },
         }
 
-        this.getList();
+        this.getList({ pageSize: 10, pageNumber: 1 });
 
         this.weChatAuthorized();
     }
 
-    async getList() {
-        console.log(this.props.listData)
-        await this.props.getList({ pageSize: 10, pageNumber: 1, tid: '22472da731a9404abb4001723da73ab9' });
+    async getList(obj: { pageSize: number, pageNumber: number }) {
+        await this.props.getList({
+            pageSize: obj.pageSize,
+            pageNumber: obj.pageNumber,
+            tid: '22472da731a9404abb4001723da73ab9'
+        }
+        );
+    }
+
+    async itemInfo(tid: string) {
+        await this.props.itemInfo(tid);
     }
 
     getQueryString(name) {
@@ -69,19 +78,20 @@ class Home extends React.Component<IProps, IState>{
         const data = {
             data: [],
             onWithRouter: (obj: object) => {
-                console.log(obj)
                 this.props.history.push('details');
+                //获取详情页信息
+                this.props.itemInfo("22472da731a9404abb4001723da73ab9");
             }
         }
 
         const pages = {
-            totalPage: 4,
+            totalPage: 1,
             paging: (obj) => {
                 // this.props.setLoading(true);
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
                 // }, 3000)
-                console.log(obj);
+                this.getList({ pageSize: obj.pageCount, pageNumber: obj.pageCurr });
             }
         }
 
@@ -89,7 +99,11 @@ class Home extends React.Component<IProps, IState>{
             <div id="home">
                 <div className="me-vote">
                     <img src={require("../../static/images/banner.png")} />
-                    <a href="#">我要报名</a>
+                    <a onClick={() => {
+                      
+                        this.props.history.push('signUp');
+
+                    }}>我要报名</a>
                 </div>
                 <div className="list">
                     <VoteList {...data} />

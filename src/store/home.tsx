@@ -1,16 +1,17 @@
 
 import { observable, action, runInAction, configure } from 'mobx';
-import axios from '../axios';
+import http from '../axios';
 const Qs = require('qs');
 configure({ enforceActions: "observed" })
 
 
 class Home {
-    @observable listData = []
+    @observable listData = [];
+    @observable itemData = []
 
     @action.bound  //获取列表
     async getList(obj: { pageSize: number, pageNumber: number, tid: string }) {
-        const { data } = await axios.post(
+        const { data: { enteredPage: { list } } } = await http.post(
             "commonh/enteryList",
             {
                 page: {
@@ -21,14 +22,14 @@ class Home {
             }
         )
         runInAction(() => {
-            this.listData = data;
+            this.listData = list;
         });
     }
 
 
     @action.bound  //code
     async officLogin(obj: { code: string }) {
-        const { data } = await axios.post(
+        const { data } = await http.post(
             "commonh/officLogin",
             {
                 code: obj.code
@@ -36,6 +37,20 @@ class Home {
         )
         runInAction(() => {
             this.listData = data;
+        });
+    }
+
+    @action.bound  //活动详情页
+    async itemInfo(tid: string ) {
+        const { data } = await http.post(
+            "commonh/itemInfo",
+            {
+                tid: tid
+            }
+        )
+        runInAction(() => {
+            console.log(data);
+            this.itemData = data;
         });
     }
 
