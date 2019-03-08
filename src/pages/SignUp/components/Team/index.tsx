@@ -2,33 +2,63 @@
 import React from 'react';
 import { Radio, Picker, InputItem, List, DatePicker, ImagePicker } from 'antd-mobile';
 import './index.scss';
+import { number } from 'prop-types';
+import { values } from 'mobx';
 
 interface IProps {
-
+    onStatusError({ errorStatus: boolean, fromData: { } }): void,  //回调方法
 }
 const data = [{
     url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg',
     id: '2121',
 }];
-export default class Personal extends React.Component<IProps> {
-    state = {
-        date: new Date(),
-        hasError: false,
-        value: '',
-        files: data,
-        multiple: false,
-        team: 0,
 
-        phone: '',
-        code: '',
-        name: '',
-        codeText: '获取验证码',
-        ageBracket: [],
+interface IState {
+    date: any,
+    hasError: boolean,
+    files: any,
+    codeText: string,
+    value: string,
 
-        phoneHasError: false,
-        codeHasError: false,
-        nameHasError: false,
-    };
+    code: string,
+    phone: string,
+    name: string,
+    declaration: string,
+
+    phoneHasError: boolean,
+    codeHasError: boolean,
+    nameHasError: boolean,
+    imgHasError: boolean,
+
+    statusError: number[],
+    ageBracket: any
+}
+export default class Personal extends React.Component<IProps, IState> {
+    constructor(props: IProps, context: IState) {
+        super(props, context);
+        this.state = {
+            date: new Date(),
+            hasError: false,
+            files: data,
+            value: '',
+
+            phone: '',
+            code: '',
+            name: '',
+            declaration: "",
+
+            codeText: '获取验证码',
+
+            phoneHasError: false,
+            codeHasError: false,
+            nameHasError: false,
+            imgHasError: false,
+
+            statusError: [],
+            ageBracket: [],
+        };
+    }
+
     onChange = (value) => {
         console.log(value);
         this.setState({ value });
@@ -62,45 +92,63 @@ export default class Personal extends React.Component<IProps> {
         switch (type) {
             case 1:  //验证码验证
                 if (value.length <= 0) {
-                    this.setState({ codeHasError: true });
+                    this.setState({ codeHasError: true, statusError: this.state.statusError.filter(i => i != 1) });
                     ret = false;
                 } else {
-                    this.setState({ codeHasError: false });
+                    this.setState({ codeHasError: false, statusError: this.state.statusError.concat(1) });
                     ret = true;
                 }
                 this.setState({ code: value });
                 break;
             case 2:  //手机号码验证
                 if (value.replace(/\s/g, '').length < 11) {
-                    this.setState({ phoneHasError: true });
+                    this.setState({ phoneHasError: true, statusError: this.state.statusError.filter(i => i != 2) });
                     ret = false;
                 } else {
-                    this.setState({ phoneHasError: false });
+                    this.setState({ phoneHasError: false, statusError: this.state.statusError.concat(2) });
                     ret = true;
                 }
                 this.setState({ phone: value });
                 break;
             case 3:  //团队名称
                 if (value.length < 1) {
-                    this.setState({ nameHasError: true });
+                    this.setState({ nameHasError: true, statusError: this.state.statusError.filter(i => i != 3) });
                     ret = false;
                 } else {
-                    this.setState({ nameHasError: false });
+                    this.setState({ nameHasError: false, statusError: this.state.statusError.concat(3) });
                     ret = true;
                 }
                 this.setState({ name: value });
                 break;
+            case 4:  //图片
+                if (value.length < 1) {
+                    this.setState({ imgHasError: true, statusError: this.state.statusError.filter(i => i != 4) });
+                    ret = false;
+                } else {
+                    this.setState({ imgHasError: false, statusError: this.state.statusError.concat(4) });
+                    ret = true;
+                }
+                this.setState({ files: value });
+                break;
         }
+        //如果全部验证通过返回true与表单数据
+        this.props.onStatusError(
+            {
+                errorStatus: (new Set(this.state.statusError).size == 4 ? true : false),
+                fromData: {
+                    name: this.state.name,
+                    phone: this.state.phone,
+                    files: this.state.files,
+                    age: this.state.date,
+                    declaration: this.state.declaration
+                }
+            }
+        );
         return ret;
-    }
-
-    constructor(props: IProps) {
-        super(props);
     }
 
     render() {
         const seasons = [
-
             {
                 label: '0岁-2岁',
                 value: '1',
@@ -182,10 +230,9 @@ export default class Personal extends React.Component<IProps> {
                         <ImagePicker
                             className="cover-file"
                             files={this.state.files}
-                            onChange={this.onChange}
+                            onChange={(value) => { this.onError(value, 4) }}
                             onImageClick={(index, fs) => console.log(index, fs)}
-                            selectable={this.state.files.length < 7}
-                            multiple={this.state.multiple}
+                            selectable={this.state.files.length < 1}
                         />
                         <div className="text">
                             上传封面图片<br />

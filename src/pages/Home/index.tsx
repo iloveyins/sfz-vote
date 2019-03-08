@@ -1,20 +1,27 @@
 import React from 'react';
 import './index.scss';
-
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import VoteList from './components/vote-list/index'
-
 import { Pagination } from '../../components/index';
-import { wxInit } from '../../utils/wxShare.js'
-interface Iprops {
+import { wxInit } from '../../utils/wxShare.js';
+import { inject, observer } from 'mobx-react';
 
+interface IProps extends RouteComponentProps {
+    getList(obj: { pageSize: number, pageNumber: number }): void
 }
 interface IState {
 
 }
+@inject(({ home, status }) => ({
+    loading: status.loading,
+    setLoading: status.setLoading,
+    getList: home.getList
 
-class Home extends React.Component<Iprops>{
+}))
 
-    constructor(props: Iprops) {
+@observer
+class Home extends React.Component<IProps>{
+    constructor(props: IProps) {
         super(props);
 
         // const title = "注册十方舟，领取20元新用户红包",
@@ -23,19 +30,27 @@ class Home extends React.Component<Iprops>{
         //     imgUrl = require("../assets/img/shortvideo/logo.png");
         // wxInit(title, window.location.href, imgUrl, desc);
 
-        // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.10fangzhou.com&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
-
-        //@ts-ignore
-        var code = F.parseURL().params.code;
-        alert(code);
-
-        //window.location.href = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx615e5ac092e9c376&secret=bc59c09b8e4e4483b33e880778a95654&code=CODE&grant_type=authorization_code";
+        this.props.getList({ pageSize: 10, pageNumber: 1 })
+        this.weChatAuthorized();
     }
 
     getQueryString(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
         if (r != null) return unescape(r[2]); return null;
+    }
+
+    //微信授权
+    weChatAuthorized() {
+        const appId = 'wx615e5ac092e9c376';
+        const code = this.getQueryString('code');
+        const redirect_uri = 'https://www.nihaotime.com/voting/#/';
+        if (code == null || code == '') {
+            //window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.nihaotime.com/voting&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+        } else {
+            //传入code
+            alert(code)
+        }
     }
 
     render() {
@@ -71,7 +86,11 @@ class Home extends React.Component<Iprops>{
                     ranking: 1,
                     img: '../../../../static/images/banner.png'
                 }
-            ]
+            ],
+            onWithRouter: (obj: object) => {
+                console.log(obj)
+                this.props.history.push('details');
+            }
         }
 
         const pages = {
@@ -81,7 +100,7 @@ class Home extends React.Component<Iprops>{
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
                 // }, 3000)
-                console.log(obj)
+                console.log(obj);
             }
         }
 
@@ -111,4 +130,4 @@ class Home extends React.Component<Iprops>{
     }
 }
 
-export default Home; 
+export default withRouter(Home); 

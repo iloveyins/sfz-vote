@@ -7,7 +7,7 @@ import 'antd-mobile/dist/antd-mobile.css';
 
 import Home from './pages/Home/index';
 import Apply from './pages/Apply/index';
-import KnowledgeDetails from './pages/KnowledgeDetails/index';
+import VoteDetails from './pages/voteDetails/index';
 import ApplyJoin from './pages/ApplyJoin/index';
 import SignUp from './pages/SignUp/index';
 import * as serviceWorker from './serviceWorker';
@@ -15,7 +15,6 @@ import { HashRouter, Route } from 'react-router-dom';
 
 import store from './store';
 import { Provider } from 'mobx-react';
-import Router from './router';
 
 ReactDOM.render(
     <Provider  {...store}>
@@ -23,7 +22,7 @@ ReactDOM.render(
             <div>
                 <Route exact path="/" component={Home}></Route>
                 <Route path="/Apply" component={Apply}></Route>
-                <Route path="/details" component={KnowledgeDetails}></Route>
+                <Route path="/details" component={VoteDetails}></Route>
                 <Route path="/applyJoin" component={ApplyJoin}></Route>
                 <Route path="/signUp" component={SignUp}></Route>
             </div>

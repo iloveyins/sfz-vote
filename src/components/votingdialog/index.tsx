@@ -24,10 +24,10 @@ export default class Votingdialog extends Component<IProps> {
                             <p className="voting-title">{title}</p>
                             <p className="voting-content">{content}</p>
                             {
-                                Boolean(shareImg) ? 
-                                <div className="logo-img">
-                                    <img src={require(shareImg)} />
-                                </div> : ""
+                                Boolean(shareImg) ?
+                                    <div className="logo-img">
+                                        <img src={require(shareImg)} />
+                                    </div> : ""
                             }
 
                             <div className="detial-footer">

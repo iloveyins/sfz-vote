@@ -6,6 +6,7 @@ import './index.scss';
 import { values } from 'mobx';
 
 interface IProps {
+    onStatusError({ errorStatus: boolean, fromData: { } }): void,  //回调方法
 }
 
 interface IState {
@@ -13,18 +14,22 @@ interface IState {
     hasError: boolean,
     value: number,
     files: any,
-    multiple: boolean,
     sex: number,
     codeText: string,
 
     code: string,
     phone: string,
     name: string,
+    declaration: string,
 
     phoneHasError: boolean,
     codeHasError: boolean,
     nameHasError: boolean,
+    imgHasError: boolean,
+
+    statusError: number[]
 }
+
 
 export default class Personal extends React.Component<IProps, IState> {
     constructor(props: IProps, context: IState) {
@@ -34,22 +39,20 @@ export default class Personal extends React.Component<IProps, IState> {
             date: new Date(),
             hasError: false,
             value: 0,
-            files: [{
-                url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg',
-                id: '2121',
-            }],
-            multiple: false,
+            files: [],
             sex: 0,
             codeText: '获取验证码',
 
             code: '',
             phone: '',
             name: '',
+            declaration: '',
 
             phoneHasError: false,
             codeHasError: false,
             nameHasError: false,
-
+            imgHasError: false,
+            statusError: []
         };
 
     }
@@ -98,40 +101,66 @@ export default class Personal extends React.Component<IProps, IState> {
         switch (type) {
             case 1:  //验证码验证
                 if (value.length <= 0) {
-                    this.setState({ codeHasError: true });
+                    this.setState({ codeHasError: true, statusError: this.state.statusError.filter(i => i != 1) });
                     ret = false;
                 } else {
-                    this.setState({ codeHasError: false });
+                    this.setState({ codeHasError: false, statusError: this.state.statusError.concat(1) });
                     ret = true;
                 }
                 this.setState({ code: value });
                 break;
             case 2:  //手机号码验证
                 if (value.replace(/\s/g, '').length < 11) {
-                    this.setState({ phoneHasError: true });
+                    this.setState({ phoneHasError: true, statusError: this.state.statusError.filter(i => i != 2) });
+
                     ret = false;
                 } else {
-                    this.setState({ phoneHasError: false });
+                    this.setState({ phoneHasError: false, statusError: this.state.statusError.concat(2) });
                     ret = true;
                 }
                 this.setState({ phone: value });
                 break;
             case 3:  //姓名
                 if (value.length < 1) {
-                    this.setState({ nameHasError: true });
+                    this.setState({ nameHasError: true, statusError: this.state.statusError.filter(i => i != 3) });
                     ret = false;
                 } else {
-                    this.setState({ nameHasError: false });
+                    this.setState({ nameHasError: false, statusError: this.state.statusError.concat(3) });
                     ret = true;
                 }
                 this.setState({ name: value });
                 break;
+            case 4:  //图片
+                if (value.length < 1) {
+                    this.setState({ imgHasError: true, statusError: this.state.statusError.filter(i => i != 4) });
+                    ret = false;
+                } else {
+                    this.setState({ imgHasError: false, statusError: this.state.statusError.concat(4) });
+                    ret = true;
+                }
+                this.setState({ files: value });
+                break;
         }
+
+        //如果全部验证通过返回true与表单数据
+        this.props.onStatusError(
+            {
+                errorStatus: (new Set(this.state.statusError).size == 4 ? true : false),
+                fromData: {
+                    name: this.state.name,
+                    phone: this.state.phone,
+                    files: this.state.files,
+                    sex: this.state.sex,
+                    age: this.state.date,
+                    declaration: this.state.declaration
+                }
+            }
+        );
         return ret;
     }
 
     render() {
-        const data1 = [
+        const sex = [
             { value: 0, label: '男' },
             { value: 1, label: '女' },
         ];
@@ -149,8 +178,11 @@ export default class Personal extends React.Component<IProps, IState> {
 
                 <div className="types-entries content-item">
                     <div className="text types-item">* 性  别：</div>
-                    {data1.map(i => (
-                        <Radio className="my-radio types-item" key={i.value} checked={this.state.sex === i.value} onChange={() => this.onChange(i.value)}>
+                    {sex.map(i => (
+                        <Radio className="my-radio types-item"
+                            key={i.value}
+                            checked={this.state.sex === i.value}
+                            onChange={() => this.onChange(i.value)}>
                             {i.label}
                         </Radio>
                     ))}
@@ -170,7 +202,8 @@ export default class Personal extends React.Component<IProps, IState> {
 
                 <div className="content-item">
                     <InputItem
-                        clear
+                        onChange={(declaration) => { this.setState({ declaration }) }}
+                        value={this.state.declaration}
                         placeholder="非必填"
                     >宣 言：</InputItem>
                 </div>
@@ -205,10 +238,11 @@ export default class Personal extends React.Component<IProps, IState> {
                         <ImagePicker
                             className="cover-file"
                             files={this.state.files}
-                            onChange={this.onFilesChange}
-                            onImageClick={(index, fs) => console.log(index, fs)}
+                            onChange={(value) => { this.onError(value, 4) }}
+                            onImageClick={(index, fs) => {
+                                console.log(index, fs);
+                            }}
                             selectable={this.state.files.length < 1}
-                            multiple={this.state.multiple}
                         />
                         <div className="text">
                             上传封面图片<br />

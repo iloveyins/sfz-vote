@@ -5,19 +5,16 @@ import axios from '../axios';
 configure({ enforceActions: "observed" })
 
 
-class Messages {
-    @observable messages = [];
-    @observable messageCount = 0;
+class signUp {
 
     @action.bound
-    async getMessageCount() {
-
-        const { data } = await axios.get(`/home`);
+    //提交报名
+    async postSignUp(obj: Object) {
+        // const { data } = await axios.get(`"`);
         runInAction(() => {
             // this.messageCount = data.data;
-            this.messageCount = 333;
         });
     }
 }
 
-export default new Messages();
+export default new signUp();

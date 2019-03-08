@@ -1,16 +1,27 @@
 import React from 'react';
+import { withRouter } from "react-router-dom";
 import './index.scss';
+import VoteDetails from '../../../voteDetails/index';
 
 interface IProps {
     data: any,
+    onWithRouter(obj: object): void
 }
 const VoteList = (props: IProps) => {
 
-    const { data } = props;
+    const { data, onWithRouter } = props;
+
+    const from = {
+        detial: {},
+        show: true
+    }
 
     return (
         data.map((item) => (
-            <div className="list-item">
+            <div className="list-item" onClick={() => {
+                onWithRouter(item);
+            }}>
+
                 <div className="item-content">
                     <div className="item-img">
                         <img alt="" src={require('../../../../static/images/banner.png')} />

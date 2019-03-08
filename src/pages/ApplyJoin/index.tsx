@@ -44,9 +44,7 @@ interface IPropsPage {
 class ApplyJoin extends React.Component<IProps, IState>{
 
     componentWillMount() {
-
         this.props.getMessageCount();
-
         this.props.setLoading(false);
     }
 
@@ -58,8 +56,6 @@ class ApplyJoin extends React.Component<IProps, IState>{
             });
         },
     }
-
-
 
     constructor(props: IProps, context: IState) {
         super(props, context);

@@ -9,7 +9,7 @@ export interface IProps {
 export interface IState {
     isAlert: boolean
 }
-export default class KnowledgeDetails extends Component<IProps, IState> {
+export default class VoteDetails extends Component<IProps, IState> {
 
     constructor(props: IProps, context: IState) {
         super(props, context);
