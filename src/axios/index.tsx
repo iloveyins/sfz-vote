@@ -4,7 +4,7 @@ import axios from 'axios';
 //如果是开发环境
 console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == 'development') {
-    axios.defaults.baseURL = "http://192.168.0.146:8080/timeVoting";
+    axios.defaults.baseURL = "https://www.nihaotime.com/timeVoting";
 } else {
     axios.defaults.baseURL = "http://192.168.0.146:8080/voting/";
 }
