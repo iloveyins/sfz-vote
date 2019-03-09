@@ -134,10 +134,8 @@ export default class Pagination extends Component<IProps, IState> {
     }
     // 更新 state
     go(pageCurr, reset = false) {
-
         const { groupCount } = this.state;
         const { totalPage, paging, locale } = this.props;
-        console.log(pageCurr % groupCount)
         if (pageCurr < 1) {
             return;
         }

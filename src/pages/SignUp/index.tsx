@@ -8,7 +8,7 @@ import Team from './components/Team/index';
 import { inject, observer } from 'mobx-react';
 
 interface IProps {
-    postSignUp(obj: Object): void,
+    postSignUp(obj: FormData): void,
     loading: Boolean,
     setLoading(val: Boolean): void,
 }
@@ -52,7 +52,6 @@ class SignUp extends React.Component<IProps, IState>{
 
     //提交报名
     onSubmmit = () => {
-
         // FormData 对象
         var form = new FormData();
         let data = {
@@ -66,8 +65,18 @@ class SignUp extends React.Component<IProps, IState>{
             declaration: this.state.fromData.declaration,
             ageRegion: "",
         }
-        form.append("coverFile", this.state.fromData.files);
-
+        form.append("coverFile[0]", this.state.fromData.files[0].file);
+        // form.append('data',JSON.stringify({
+        //     uid: "",
+        //     tid: "",
+        //     entryType: 1,
+        //     name: '',
+        //     link_phone: 1111111111,
+        //     sex: '',
+        //     birthday: '',
+        //     declaration: '',
+        //     ageRegion: "",
+        // }))
         // form.append("uid", "");
         // form.append("tid", "");
         // form.append("entryType", "1");
@@ -78,11 +87,11 @@ class SignUp extends React.Component<IProps, IState>{
         // form.append("declaration", "234");
         // form.append("ageRegion", "");
 
-        this.postSign(data);
+        this.postSign(form);
     }
 
     async postSign(form) {
-        await this.props.postSignUp({ ...form });
+        await this.props.postSignUp(form);
     }
 
     constructor(props: IProps, context: IState) {

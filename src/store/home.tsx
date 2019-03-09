@@ -1,18 +1,21 @@
 
 import { observable, action, runInAction, configure } from 'mobx';
 import http from '../axios';
+import { number } from 'prop-types';
 const Qs = require('qs');
 configure({ enforceActions: "observed" })
 
 
-class Home {
+export class Home {
     @observable listData = [];
     @observable itemData = [];
     @observable itemDetails = {};
 
+    @observable pagesCount = 0;
+
     @action.bound  //获取列表
     async getList(obj: { pageSize: number, pageNumber: number, tid: string }) {
-        const { data: { enteredPage: { list } } } = await http.post(
+        const { data: { enteredPage: { list, pages } } } = await http.post(
             "commonh/enteryList",
             {
                 page: {
@@ -23,6 +26,8 @@ class Home {
             }
         )
         runInAction(() => {
+            console.log(pages)
+            this.pagesCount = pages;
             this.listData = list;
         });
     }
@@ -72,7 +77,6 @@ class Home {
     }
 
     @action.bound
-    //
     async entryInfo(obj: { tid: string, uid: string }) {
         const { data } = await http.post(`commonh/entryInfo `, {
             tid: "22472da731a9404abb4001723da73ab9",

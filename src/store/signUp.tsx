@@ -13,11 +13,27 @@ class signUp {
 
     @action.bound
     //提交报名
-    async postSignUp(obj: Object) {
-        console.log(obj)
+    async postSignUp(obj: FormData) {
+
         const { data } = await axios.post(
             `businessh/entrying`,
             obj,
+            {
+                // headers: {
+                //     "Content-Type": 'multipart/form-data'
+                // },
+                params: {
+                    uid: "",
+                    tid: "",
+                    entryType: 1,
+                    name: '',
+                    link_phone: 1111111111,
+                    sex: '',
+                    birthday: '',
+                    declaration: '',
+                    ageRegion: "",
+                }
+            }
         );
         runInAction(() => {
             console.log(data);
@@ -47,8 +63,9 @@ class signUp {
         const { data } = await axios.post(`commonh/voteCheck`, obj);
         runInAction(() => {
             data.code == '0' ? this.isVote = true : this.isVote = false;
-            console.log(this.isVote);
+            console.log('isVote 修改完毕',this.isVote);
         });
+        return data.code;
     }
 
     @action.bound

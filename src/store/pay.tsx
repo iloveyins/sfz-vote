@@ -33,6 +33,7 @@ class Pay {
         runInAction(() => {
 
             console.log(data);
+            
             var appId = data.appId;
             var secret = data.secretKey;
             var activityUid = data.activityUid;

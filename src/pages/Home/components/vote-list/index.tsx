@@ -4,21 +4,20 @@ import './index.scss';
 import VoteDetails from '../../../voteDetails/index';
 
 import { observer, inject } from 'mobx-react'
+import { async } from 'q';
 
 interface IProps extends RouteComponentProps {
     data: any,
     onWithRouter(obj: object): void,
-    voteFree(obj: object): void,
-    voteCheck(obj: object): void,
+    voteFree?(obj: object): void,
+    voteCheck?(obj: object): string,
     isVote: boolean
 }
 
 const isWeiXin = () => {
-    //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
     var ua = window.navigator.userAgent.toLowerCase();
     //通过正则表达式匹配ua中是否含有MicroMessenger字符串
-    //@ts-ignore
-    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+    if (/MicroMessenger/i.test(ua)) {
         return true;
     } else {
         return false;
@@ -34,11 +33,22 @@ const getUrl = (name) => {
     if (r != null) return unescape(r[2]); return null;
 }
 
-
-
 const VoteList = (props: IProps) => {
 
-    const { data, onWithRouter, voteFree, voteCheck, isVote } = props;
+    const { data, onWithRouter, voteFree, voteCheck } = props;
+
+    const voteClick = async(e: React.MouseEvent<HTMLAnchorElement & {dataset: {uid: string}}>) => {
+        e.stopPropagation();
+        if (isWeiXin()) {
+            voteFree && voteFree({ tid: getUrl('tid'), uid: window.localStorage["sfzvoteuid"], tuid: e.currentTarget.dataset.uid });
+        } else {
+            const code = voteCheck && await voteCheck({ tid: '22472da731a9404abb4001723da73ab9' });
+            if (code === '0') {
+                props.history.push('Apply');
+            }
+
+        }
+    };
 
     return (
         data.map((item) => (
@@ -56,21 +66,7 @@ const VoteList = (props: IProps) => {
                         <span>{item.id}号</span>
                         <span>{item.voteNum}票</span>
                     </div>
-                    <a className="btn-vote" onClick={(e) => {
-                        e.stopPropagation();
-                        if (isWeiXin()) {
-                            voteFree({ tid: getUrl('tid'), uid: window.localStorage["sfzvoteuid"], tuid: item.uid });
-                        } else {
-
-                            voteCheck({ tid: '22472da731a9404abb4001723da73ab9' });
-                            setTimeout(() => {
-                                if (!isVote) {
-                                    props.history.push('Apply');
-                                }
-                            }, 1000)
-
-                        }
-                    }}>
+                    <a className="btn-vote" onClick={voteClick} data-uid={item.uid}>
                         为TA投票
                 </a>
                 </div>

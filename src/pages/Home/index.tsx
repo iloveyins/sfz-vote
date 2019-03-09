@@ -5,10 +5,11 @@ import VoteList from './components/vote-list/index'
 import { Pagination } from '../../components/index';
 import { wxInit } from '../../utils/wxShare.js';
 import { inject, observer } from 'mobx-react';
+import { Home as HomeStore } from '../../store/home';
 
 interface IProps extends RouteComponentProps {
     getList(obj: { pageSize: number, pageNumber: number, tid: string }): void,
-    listData: [],
+    pagesCount: number,
     officLogin(obj: object): void,
     itemInfo(tid: string): void,
     itemData: {
@@ -16,22 +17,23 @@ interface IProps extends RouteComponentProps {
         picUrl: string
     },
     entryInfo(obj: object): void,
+    setLoading(obj: boolean): void
 }
 
 interface IState {
 
 }
 
-@inject(({ home, status }) => ({
+@inject(({ home, status }: {home: HomeStore, status: any}) => ({
     loading: status.loading,
     setLoading: status.setLoading,
     getList: home.getList,
     officLogin: home.officLogin,
     itemInfo: home.itemInfo,
     itemData: home.itemData,
-    entryInfo: home.entryInfo
+    entryInfo: home.entryInfo,
+    pagesCount: home.pagesCount
 }))
-
 @observer
 class Home extends React.Component<IProps, IState>{
     constructor(props: IProps, context: IState) {
@@ -52,6 +54,11 @@ class Home extends React.Component<IProps, IState>{
             tid: '22472da731a9404abb4001723da73ab9'
         }
         );
+    }
+
+    componentWillMount() {
+        const params = new URLSearchParams(this.props.location.search)
+        console.log(params.get('age'));
     }
 
     async itemInfo(tid: string) {
@@ -83,22 +90,23 @@ class Home extends React.Component<IProps, IState>{
         const data = {
             data: [],
             onWithRouter: (obj: { tid: string, uid: string }) => {
-                console.log(obj);
+
                 this.props.entryInfo({ tid: obj.tid, uid: obj.uid });
+
                 this.props.history.push('details');
             },
-            voteFree: (obj: object) => { },
-            voteCheck: (obj: object) => { },
             isVote: false
         }
 
-        const pages = {
-            totalPage: 13,
+        const page = {
+            totalPage: this.props.pagesCount,
             paging: (obj) => {
+
                 // this.props.setLoading(true);
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
                 // }, 3000)
+
                 this.getList({ pageSize: obj.pageCount, pageNumber: obj.pageCurr });
             }
         }
@@ -106,7 +114,7 @@ class Home extends React.Component<IProps, IState>{
         return (
             <div id="home">
                 <div className="me-vote">
-                    <img src="" />
+                    <img src={itemData.picUrl} />
                     <a onClick={() => {
                         this.props.history.push('signUp');
                     }}>我要报名</a>
@@ -114,7 +122,7 @@ class Home extends React.Component<IProps, IState>{
                 <div className="list">
                     <VoteList {...data} />
                 </div>
-                <Pagination  {...pages} />
+                <Pagination  {...page} />
                 <div className="activity-rules">
                     <div className="activity-rules-header">
                         <img src={require("../../static/images/frame@3x.png")} alt="" />
