@@ -6,53 +6,59 @@ configure({ enforceActions: "observed" })
 
 
 class signUp {
+    @observable iSCaptcha = true;
+
+    //活动是否有效
+    @observable isVote = false;
 
     @action.bound
     //提交报名
     async postSignUp(obj: Object) {
-        const { data } = await axios.post(`businessh/entrying`, obj);
+        console.log(obj)
+        const { data } = await axios.post(
+            `businessh/entrying`,
+            obj,
+        );
         runInAction(() => {
-            alert("d")
             console.log(data);
         });
     }
 
     @action.bound
     //发送验证码 
-    async sendCaptcha(obj: Object) {
-        const { data } = await axios.get(`commonh/sendCaptcha`);
+    async sendCaptcha(obj: { sendType: number, phoneNum: string }) {
+        const { data } = await axios.post(`commonh/sendCaptcha`, obj);
         runInAction(() => {
-            // this.messageCount = data.data;
+            this.iSCaptcha = data;
         });
     }
 
     @action.bound
     //验证用户是否可报名以及参赛状态
     async entryCheck(obj: Object) {
-        const { data } = await axios.get(`businessh/entryCheck`);
+        const { data } = await axios.post(`businessh/entryCheck`);
         runInAction(() => {
-            // this.messageCount = data.data;
         });
     }
 
     @action.bound
     //验证用户是否可报名以及参赛状态（非微信）
     async voteCheck(obj: Object) {
-        const { data } = await axios.get(`commonh/voteCheck`);
+        const { data } = await axios.post(`commonh/voteCheck`, obj);
         runInAction(() => {
-            // this.messageCount = data.data;
+            data.code == '0' ? this.isVote = true : this.isVote = false;
+            console.log(this.isVote);
         });
     }
 
     @action.bound
     //验证用户是否可报名以及参赛状态（微信）
     async voteFree(obj: { tid: string, uid: string, tuid: string }) {
-        const { data } = await axios.get(`businessh/voteFree `);
+        const { data } = await axios.post(`businessh/voteFree `, obj);
         runInAction(() => {
-            // this.messageCount = data.data;
+
         });
     }
-
 }
 
 export default new signUp();

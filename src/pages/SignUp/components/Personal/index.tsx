@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { Radio, Picker, InputItem, List, DatePicker, ImagePicker } from 'antd-mobile';
-const RadioItem = Radio.RadioItem;
 import './index.scss';
-import { values } from 'mobx';
+import { inject, observer } from 'mobx-react';
 
 interface IProps {
     onStatusError({ errorStatus: boolean, fromData: { } }): void,  //回调方法
+    sendCaptcha({ sendType: number, phoneNum: string }): void,
 }
 
 interface IState {
@@ -30,7 +30,13 @@ interface IState {
     statusError: number[]
 }
 
+@inject(({ signUp, status }) => ({
+    loading: status.loading,
+    setLoading: status.setLoading,
+    sendCaptcha: signUp.sendCaptcha
+}))
 
+@observer
 export default class Personal extends React.Component<IProps, IState> {
     constructor(props: IProps, context: IState) {
         super(props, context);
@@ -54,7 +60,6 @@ export default class Personal extends React.Component<IProps, IState> {
             imgHasError: false,
             statusError: []
         };
-
     }
 
     componentDidMount() {
@@ -79,10 +84,13 @@ export default class Personal extends React.Component<IProps, IState> {
 
     }
 
-    //验证验证码
+    //发送验证码
     onErrorCode() {
         let count = 5;
-        if (this.onError(this.state.phone, 2) && this.onError(this.state.code, 1)) {
+        if (this.onError(this.state.phone, 2)) {
+
+            this.props.sendCaptcha({ sendType: 6, phoneNum: this.state.phone.replace(/\s+/g, "") });
+
             this.setState({ codeText: `${count}s` });
             var clrarTime = setInterval(() => {
                 count--;
@@ -152,7 +160,8 @@ export default class Personal extends React.Component<IProps, IState> {
                     files: this.state.files,
                     sex: this.state.sex,
                     age: this.state.date,
-                    declaration: this.state.declaration
+                    declaration: this.state.declaration,
+                    captcha: this.state.code
                 }
             }
         );

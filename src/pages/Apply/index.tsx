@@ -2,7 +2,7 @@
 import React from 'react';
 // import {Toast}  from '../../componets/index';
 import './index.scss';
-// import VotingDialog from '../../components/votingdialog/index'
+import { Paydialog } from '../../components/index'
 
 export interface IProps {
     name: string;
@@ -31,12 +31,13 @@ export default class Apply extends React.Component<IProps, IState> {
             content: '',
             onBugCount() {
                 self.setState({ isAlert: false })
-            }
+            },
+            weChatExternalPay() { }
         }
         return (
             <div id="apply">
                 {
-                    // this.state.isAlert ? <VotingDialog {...data} /> : ""
+                    this.state.isAlert ? <Paydialog {...data} /> : ""
                 }
                 <div className="apply-wrap">
                     <div className="apply-money">
@@ -50,7 +51,12 @@ export default class Apply extends React.Component<IProps, IState> {
                                     <p>内容：每人每天投票10次</p>
                                     <p>金额：10元</p>
                                 </div>
-                                <p className="pay-button">在线支付</p>
+                                <p className="pay-button"
+                                    onClick={() => {
+                                        this.setState({
+                                            isAlert: true
+                                        })
+                                    }}>在线支付</p>
                             </div>
                         </div>
                     </div>

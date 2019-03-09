@@ -2,14 +2,13 @@
 import React from 'react';
 import { Radio, Picker, InputItem, List, ImagePicker } from 'antd-mobile';
 import './index.scss';
+import { inject, observer } from 'mobx-react';
 
 interface IProps {
     onStatusError({ errorStatus: boolean, fromData: { } }): void,  //回调方法
+    sendCaptcha({ sendType: number, phoneNum: string }): void,
 }
-const data = [{
-    url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg',
-    id: '2121',
-}];
+const data = [];
 
 interface IState {
     date: any,
@@ -31,6 +30,14 @@ interface IState {
     statusError: number[],
     ageBracket: any
 }
+
+@inject(({ signUp, status }) => ({
+    loading: status.loading,
+    setLoading: status.setLoading,
+    sendCaptcha: signUp.sendCaptcha
+}))
+
+@observer
 export default class Personal extends React.Component<IProps, IState> {
     constructor(props: IProps, context: IState) {
         super(props, context);
@@ -70,7 +77,10 @@ export default class Personal extends React.Component<IProps, IState> {
     //验证验证码
     onErrorCode() {
         let count = 5;
-        if (this.onError(this.state.phone, 2) && this.onError(this.state.code, 1)) {
+        if (this.onError(this.state.phone, 2)) {
+
+            this.props.sendCaptcha({ sendType: 6, phoneNum: this.state.phone.replace(/\s+/g, "") });
+
             this.setState({ codeText: `${count}s` });
             var clrarTime = setInterval(() => {
                 count--;
@@ -151,27 +161,27 @@ export default class Personal extends React.Component<IProps, IState> {
                 value: '1',
             },
             {
-                label: '3岁-6岁',
+                label: '2岁-4岁',
                 value: '2',
             },
             {
-                label: '8岁-12岁',
+                label: '4岁-7岁',
                 value: '3',
             },
             {
-                label: '12岁-32岁',
+                label: '7岁-12岁',
                 value: '4',
             },
             {
-                label: '32岁-38岁',
+                label: '12岁-18岁',
                 value: '5',
             },
             {
-                label: '50岁-60岁',
+                label: '18岁-29岁',
                 value: '6',
             },
             {
-                label: '70岁-80岁',
+                label: '29岁以上',
                 value: '7',
             },
         ];

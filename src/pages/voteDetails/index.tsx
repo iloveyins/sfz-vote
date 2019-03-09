@@ -7,7 +7,28 @@ import { observer, inject } from 'mobx-react'
 export interface IProps {
     detial: object,
     show: boolean,
-    itemData: [],
+    itemDetails: {
+        age: number
+        ageRegion: string
+        birthday: string
+        captcha: string
+        cover: string
+        createTime: string
+        declaration: string
+        describeInfo: string
+        entryType: string
+        id: number
+        linkPhone: string
+        name: string
+        photoShow: string
+        ranking: 0
+        sex: string
+        status: string
+        tid: string
+        uid: string
+        videoShow: string
+        voteNum: string
+    },
 }
 
 export interface IState {
@@ -22,7 +43,6 @@ class VoteDetails extends Component<IProps, IState> {
         this.state = {
             isAlert: false
         }
-
     }
 
     render() {
@@ -52,7 +72,7 @@ class VoteDetails extends Component<IProps, IState> {
                 self.setState({ isAlert: false })
             }
         }
-        const { itemData } = this.props;
+        const { itemDetails } = this.props;
         return (
             <div className="knowledge-details">
                 <div className="detail-background">
@@ -63,37 +83,37 @@ class VoteDetails extends Component<IProps, IState> {
                         </div>
                         <div className="voting-wrap">
                             <div>
-                                <p>{data.number}</p>
+                                <p>{itemDetails.id}</p>
                                 <p>编号</p>
                             </div>
                             <div>
-                                <p>{data.votes}</p>
+                                <p>{itemDetails.voteNum}</p>
                                 <p>总票数</p>
                             </div>
                             <div>
-                                <p>{data.votes}</p>
+                                <p>{itemDetails.ranking}</p>
                                 <p>排名</p>
                             </div>
-                            <div>
-                                <p>{data.ranking}</p>
+                            {/* <div>
+                                <p>{itemDetails.ranking}</p>
                                 <p>距上差距</p>
-                            </div>
+                            </div> */}
                         </div>
                     </section>
                     <section className="detial-center">
                         <div>
-                            <p>参赛宣言：{data.detial.declaration}</p>
+                            <p>参赛宣言：{itemDetails.declaration}</p>
                         </div>
                         {
-                            Boolean(data.detial.type === '个人') ?
+                            Boolean(itemDetails.entryType === '1') ?
                                 <div className="declaration-detail">
-                                    <p>类型：{data.detial.type}</p>
-                                    <p>姓名：{data.detial.name}</p><p>性别：{data.detial.sex}</p><p>年龄范围：{data.detial.age}</p>
+                                    <p>类型：{itemDetails.entryType == '1' ? "个人" : "团队"}</p>
+                                    <p>姓名：{itemDetails.name}</p><p>性别：{itemDetails.sex}</p><p>年龄范围：{itemDetails.age}</p>
                                 </div>
                                 :
                                 <div className="declaration-detail">
-                                    <p>类型：{data.detial.type}</p>
-                                    <p>团队名称：{data.detial.teamName}</p><p>年龄范围：{data.detial.age}</p>
+                                    <p>类型：{itemDetails.entryType}</p>
+                                    <p>团队名称：{itemDetails.name}</p><p>年龄范围：{itemDetails.ageRegion}</p>
                                 </div>
                         }
                     </section>
@@ -110,5 +130,6 @@ class VoteDetails extends Component<IProps, IState> {
 }
 
 export default inject(({ home, status }) => ({
-    data: home.itemData,
+    itemDetails: home.itemDetails,
+
 }))(observer(VoteDetails));

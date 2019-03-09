@@ -11,6 +11,11 @@ interface IProps extends RouteComponentProps {
     listData: [],
     officLogin(obj: object): void,
     itemInfo(tid: string): void,
+    itemData: {
+        activityNotice: string,
+        picUrl: string
+    },
+    entryInfo(obj: object): void,
 }
 
 interface IState {
@@ -22,7 +27,9 @@ interface IState {
     setLoading: status.setLoading,
     getList: home.getList,
     officLogin: home.officLogin,
-    itemInfo: home.itemInfo
+    itemInfo: home.itemInfo,
+    itemData: home.itemData,
+    entryInfo: home.entryInfo
 }))
 
 @observer
@@ -30,16 +37,12 @@ class Home extends React.Component<IProps, IState>{
     constructor(props: IProps, context: IState) {
         super(props, context);
 
-        this.state = {
-            listData: [],
-            onWithRouter: (obj: object) => {
-                this.props.history.push('details');
-            },
-        }
-
-        this.getList({ pageSize: 10, pageNumber: 1 });
+        this.getList({ pageSize: 10, pageNumber: 2 });
 
         this.weChatAuthorized();
+
+        //获取详情页信息
+        this.props.itemInfo("22472da731a9404abb4001723da73ab9");
     }
 
     async getList(obj: { pageSize: number, pageNumber: number }) {
@@ -67,7 +70,7 @@ class Home extends React.Component<IProps, IState>{
         const code = this.getQueryString('code');
         const redirect_uri = 'https://www.nihaotime.com/voting/#/';
         if (code == null || code == '') {
-            //window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.nihaotime.com/voting&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+            // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.nihaotime.com/voting&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
         } else {
             //传入code
             this.props.officLogin({ code })
@@ -75,17 +78,22 @@ class Home extends React.Component<IProps, IState>{
     }
 
     render() {
+        const { itemData } = this.props;
+
         const data = {
             data: [],
-            onWithRouter: (obj: object) => {
+            onWithRouter: (obj: { tid: string, uid: string }) => {
+                console.log(obj);
+                this.props.entryInfo({ tid: obj.tid, uid: obj.uid });
                 this.props.history.push('details');
-                //获取详情页信息
-                this.props.itemInfo("22472da731a9404abb4001723da73ab9");
-            }
+            },
+            voteFree: (obj: object) => { },
+            voteCheck: (obj: object) => { },
+            isVote: false
         }
 
         const pages = {
-            totalPage: 1,
+            totalPage: 13,
             paging: (obj) => {
                 // this.props.setLoading(true);
                 // setTimeout(() => {
@@ -98,11 +106,9 @@ class Home extends React.Component<IProps, IState>{
         return (
             <div id="home">
                 <div className="me-vote">
-                    <img src={require("../../static/images/banner.png")} />
+                    <img src="" />
                     <a onClick={() => {
-                      
                         this.props.history.push('signUp');
-
                     }}>我要报名</a>
                 </div>
                 <div className="list">
@@ -115,9 +121,7 @@ class Home extends React.Component<IProps, IState>{
                         <span className="text">活动规则</span>
                     </div>
                     <p>
-                        1、费用包含大赛报名费、团队组织费和保险等团队活动费用<br /><br />
-                        2、费用包含大赛报名费、团队组织费和保险等团队活动费用<br /><br />
-                        3、费用包含大赛报名费、团队组织费和保险等团队活动费用<br />
+                        {itemData.activityNotice}
                     </p>
                 </div>
             </div>

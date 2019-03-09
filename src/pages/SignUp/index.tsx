@@ -13,6 +13,22 @@ interface IProps {
     setLoading(val: Boolean): void,
 }
 
+interface IState {
+    date: any,
+    isTeam: number,
+    isError: boolean,
+
+    fromData: {
+        name: string,
+        phone: string,
+        sex: number,
+        files: any,
+        age: any,
+        captcha: string
+        declaration: string
+    }
+}
+
 @inject(({ signUp, status }) => ({
     postSignUp: signUp.postSignUp,
     loading: status.loading,
@@ -20,23 +36,7 @@ interface IProps {
 }))
 
 @observer
-class SignUp extends React.Component<IProps>{
-
-    state = {
-        date: new Date(),
-        isTeam: 0,
-        isError: false,
-
-        fromData: {
-            name: "",
-            phone: "",
-            files: [],
-            type: "",
-            sex: "",
-            age: "",
-            declaration: ""
-        }
-    };
+class SignUp extends React.Component<IProps, IState>{
 
     onChange = (isTeam) => {
         this.setState({ isTeam });
@@ -51,13 +51,57 @@ class SignUp extends React.Component<IProps>{
     }
 
     //提交报名
-    onSubmmit() {
-        console.log(this.state.fromData)
-        this.props.postSignUp(this.state.fromData);
+    onSubmmit = () => {
+
+        // FormData 对象
+        var form = new FormData();
+        let data = {
+            uid: "",
+            tid: "",
+            entryType: 1,
+            name: this.state.fromData.name,
+            link_phone: this.state.fromData.phone,
+            sex: this.state.fromData.sex,
+            birthday: this.state.fromData.age,
+            declaration: this.state.fromData.declaration,
+            ageRegion: "",
+        }
+        form.append("coverFile", this.state.fromData.files);
+
+        // form.append("uid", "");
+        // form.append("tid", "");
+        // form.append("entryType", "1");
+        // form.append("name", "1");
+        // form.append("link_phone", "1");
+        // form.append("sex", "1");
+        // form.append("birthday", "");
+        // form.append("declaration", "234");
+        // form.append("ageRegion", "");
+
+        this.postSign(data);
     }
 
-    constructor(props: IProps) {
-        super(props);
+    async postSign(form) {
+        await this.props.postSignUp({ ...form });
+    }
+
+    constructor(props: IProps, context: IState) {
+        super(props, context);
+        this.state = {
+            date: new Date(),
+            isTeam: 0,
+            isError: false,
+
+            fromData: {
+                name: "",
+                phone: "",
+                files: [],
+                sex: 0,
+                age: 0,
+                declaration: "",
+                captcha: ""
+            }
+        };
     }
 
     render() {
@@ -75,9 +119,11 @@ class SignUp extends React.Component<IProps>{
                     sex: number,
                     files: any,
                     age: any,
-                    declaration: string
+                    declaration: string,
+                    captcha: string
                 }
             }) => {
+
                 this.setState({ isError: obj.errorStatus });
 
                 //验证通过
@@ -86,16 +132,20 @@ class SignUp extends React.Component<IProps>{
                     this.setState({
                         fromData: {
                             name: obj.fromData.name,
-                            phone: obj.fromData.phone.replace(/^\s+|\s+$/g, ''),
+                            phone: obj.fromData.phone.replace(/\s+/g, ""),
                             files: obj.fromData.files,
                             sex: obj.fromData.sex,
                             age: obj.fromData.age,
-                            declaration: obj.fromData.declaration
+                            declaration: obj.fromData.declaration,
+                            captcha: obj.fromData.captcha
                         }
                     });
                 }
-            }
+            },
+            sendCaptcha: () => { }
         }
+
+
 
         return (
             <div className="sign-up">
@@ -128,7 +178,7 @@ class SignUp extends React.Component<IProps>{
                     </div>
                     <button
                         className={`sign-btn ${this.state.isError ? 'sign-btn-ok' : ''}`}
-                        // disabled={!this.state.isError}
+                        disabled={!this.state.isError}
                         onClick={this.onSubmmit}>
                         立即报名
                     </button>

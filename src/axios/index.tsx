@@ -4,7 +4,7 @@ import axios from 'axios';
 //如果是开发环境
 console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV == 'development') {
-    axios.defaults.baseURL = "https://www.nihaotime.com/timeVoting";
+    axios.defaults.baseURL = "http://192.168.0.146:8080/timeVoting";
 } else {
     axios.defaults.baseURL = "http://192.168.0.146:8080/voting/";
 }
@@ -12,7 +12,6 @@ if (process.env.NODE_ENV == 'development') {
 const http = axios.create({
     timeout: 5000
 });
-
 
 
 http.interceptors.request.use(
@@ -32,8 +31,9 @@ http.interceptors.request.use(
 http.interceptors.response.use(
     //@ts-ignore
     res => {
-        return typeof res.data.data === "string" ?
-            { data: res.data.data } :
+        console.log(res.data.data)
+        return res.data.data === null ?
+            { data: res.data } :
             { data: { ...res.data.data } };
     },
     err => {
