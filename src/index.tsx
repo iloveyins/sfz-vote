@@ -10,6 +10,8 @@ import Apply from './pages/Apply/index';
 import VoteDetails from './pages/voteDetails/index';
 import ApplyJoin from './pages/ApplyJoin/index';
 import SignUp from './pages/SignUp/index';
+import PaySuccess from './pages/PaySuccess/index';
+import VotingDialog from './components/votingdialog/index';
 import * as serviceWorker from './serviceWorker';
 import { HashRouter, Route } from 'react-router-dom';
 
@@ -25,6 +27,8 @@ ReactDOM.render(
                 <Route path="/details" component={VoteDetails}></Route>
                 <Route path="/applyJoin" component={ApplyJoin}></Route>
                 <Route path="/signUp" component={SignUp}></Route>
+                <Route path="/paySuccess" component={PaySuccess}></Route>
+                <Route path="/votingDialog" component={VotingDialog}></Route>
             </div>
         </HashRouter>
         {/* <Router /> */}

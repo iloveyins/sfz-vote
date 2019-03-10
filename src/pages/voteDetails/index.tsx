@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
 import './index.scss';
-import Paydialog from '../Apply/index'
+import Paydialog from '../Apply/index';
+import { wxInit } from '../../utils/wxShare'
 import { observer, inject } from 'mobx-react'
 
 export interface IProps {
@@ -43,6 +44,7 @@ class VoteDetails extends Component<IProps, IState> {
         this.state = {
             isAlert: false
         }
+        wxInit("title", "www.baidu.com", "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551877236609&di=5609ca52c70751baf8a9778e53f50bfb&imgtype=0&src=http%3A%2F%2Fc.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fa5c27d1ed21b0ef4b9e8896ad3c451da81cb3e85.jpg", "nishihao");
     }
 
     render() {

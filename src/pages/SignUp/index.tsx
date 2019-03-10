@@ -155,7 +155,6 @@ class SignUp extends React.Component<IProps, IState>{
         }
 
 
-
         return (
             <div className="sign-up">
                 <img className="sign-up-img" src={require("../../static/images/banner.png")} />

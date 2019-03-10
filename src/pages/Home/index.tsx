@@ -7,6 +7,7 @@ import { wxInit } from '../../utils/wxShare.js';
 import { inject, observer } from 'mobx-react';
 import { Home as HomeStore } from '../../store/home';
 
+
 interface IProps extends RouteComponentProps {
     getList(obj: { pageSize: number, pageNumber: number, tid: string }): void,
     pagesCount: number,
@@ -24,7 +25,7 @@ interface IState {
 
 }
 
-@inject(({ home, status }: {home: HomeStore, status: any}) => ({
+@inject(({ home, status }: { home: HomeStore, status: any }) => ({
     loading: status.loading,
     setLoading: status.setLoading,
     getList: home.getList,
@@ -34,6 +35,7 @@ interface IState {
     entryInfo: home.entryInfo,
     pagesCount: home.pagesCount
 }))
+
 @observer
 class Home extends React.Component<IProps, IState>{
     constructor(props: IProps, context: IState) {
@@ -41,7 +43,9 @@ class Home extends React.Component<IProps, IState>{
 
         this.getList({ pageSize: 10, pageNumber: 2 });
 
-        this.weChatAuthorized();
+        if (this.isWeiXin()) {
+            this.weChatAuthorized();
+        }
 
         //获取详情页信息
         this.props.itemInfo("22472da731a9404abb4001723da73ab9");
@@ -54,6 +58,15 @@ class Home extends React.Component<IProps, IState>{
             tid: '22472da731a9404abb4001723da73ab9'
         }
         );
+    }
+    isWeiXin = () => {
+        var ua = window.navigator.userAgent.toLowerCase();
+        //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+        if (/MicroMessenger/i.test(ua)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     componentWillMount() {
@@ -75,12 +88,16 @@ class Home extends React.Component<IProps, IState>{
     weChatAuthorized() {
         const appId = 'wx615e5ac092e9c376';
         const code = this.getQueryString('code');
-        const redirect_uri = 'https://www.nihaotime.com/voting/#/';
+        const redirect_uri = 'https://www.nihaotime.com/voting/';
         if (code == null || code == '') {
-            // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx615e5ac092e9c376&redirect_uri=https://www.nihaotime.com/voting&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+            window.localStorage.setItem('sfzvoteappId', "")
+            //window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
         } else {
-            //传入code
-            this.props.officLogin({ code })
+            var appid = window.localStorage.getItem('sfzvoteappId');
+            if (appid == undefined || appid == null || appid == "") {
+                //传入code
+                this.props.officLogin({ code });
+            }
         }
     }
 
@@ -90,9 +107,7 @@ class Home extends React.Component<IProps, IState>{
         const data = {
             data: [],
             onWithRouter: (obj: { tid: string, uid: string }) => {
-
                 this.props.entryInfo({ tid: obj.tid, uid: obj.uid });
-
                 this.props.history.push('details');
             },
             isVote: false
@@ -101,12 +116,10 @@ class Home extends React.Component<IProps, IState>{
         const page = {
             totalPage: this.props.pagesCount,
             paging: (obj) => {
-
                 // this.props.setLoading(true);
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
                 // }, 3000)
-
                 this.getList({ pageSize: obj.pageCount, pageNumber: obj.pageCurr });
             }
         }

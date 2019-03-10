@@ -42,14 +42,15 @@ export class Home {
             }
         )
         runInAction(() => {
-            console.log(data);
             if (!window.localStorage) {
                 return false;
             } else {
                 //主逻辑业务
                 var storage = window.localStorage;
-                alert(data.uid)
+                console.log(data);
                 storage.setItem("sfzvoteuid", data.uid);
+                storage.setItem("sfzvoteappId", JSON.stringify({ data: data.openId, time: 30 * 24 * 60 * 60 * 1000 }));
+                storage.setItem("sfzvotelogindom", data.loginRandom);
             }
         });
     }

@@ -3,6 +3,7 @@ import React from 'react';
 // import {Toast}  from '../../componets/index';
 import './index.scss';
 import { Paydialog } from '../../components/index'
+import { string } from 'prop-types';
 
 export interface IProps {
     name: string;
@@ -32,12 +33,12 @@ export default class Apply extends React.Component<IProps, IState> {
             onBugCount() {
                 self.setState({ isAlert: false })
             },
-            weChatExternalPay() { }
         }
+
         return (
             <div id="apply">
                 {
-                    this.state.isAlert ? <Paydialog {...data} /> : ""
+                    this.state.isAlert ? <Paydialog /> : ""
                 }
                 <div className="apply-wrap">
                     <div className="apply-money">
