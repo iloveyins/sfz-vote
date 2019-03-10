@@ -19,20 +19,9 @@ class signUp {
             `businessh/entrying`,
             obj,
             {
-                // headers: {
-                //     "Content-Type": 'multipart/form-data'
-                // },
-                params: {
-                    uid: "",
-                    tid: "",
-                    entryType: 1,
-                    name: '',
-                    link_phone: 1111111111,
-                    sex: '',
-                    birthday: '',
-                    declaration: '',
-                    ageRegion: "",
-                }
+                headers: {
+                    "Content-Type": 'application/x-www-form-urlencoded'
+                },
             }
         );
         runInAction(() => {
@@ -63,7 +52,7 @@ class signUp {
         const { data } = await axios.post(`commonh/voteCheck`, obj);
         runInAction(() => {
             data.code == '0' ? this.isVote = true : this.isVote = false;
-            console.log('isVote 修改完毕',this.isVote);
+            console.log('isVote 修改完毕', this.isVote);
         });
         return data.code;
     }

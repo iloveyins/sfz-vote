@@ -123,6 +123,7 @@ class VoteDetails extends Component<IProps, IState> {
                         }}>为TA投票</span>
                         <span>分享拉票</span>
                     </section>
+                    <section className="bottom-empty"></section>
                 </div>
             </div>
         )
