@@ -18,26 +18,11 @@ class signUp {
         const { data } = await axios.post(
             `businessh/entrying`,
             obj,
-            {
-                // headers: {
-                //     "Content-Type": 'multipart/form-data'
-                // },
-                params: {
-                    uid: "",
-                    tid: "",
-                    entryType: 1,
-                    name: '',
-                    link_phone: 1111111111,
-                    sex: '',
-                    birthday: '',
-                    declaration: '',
-                    ageRegion: "",
-                }
-            }
         );
         runInAction(() => {
             console.log(data);
         });
+        return data;
     }
 
     @action.bound

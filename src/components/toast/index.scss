@@ -4,7 +4,7 @@
   position: fixed;
   width: 100%;
   z-index: 999;
-  font-size: px2rem(6px);
+  font-size: px2rem(12px);
   text-align: center;
   span {
     max-width: 50%;
@@ -28,10 +28,10 @@
       border-radius: 7px;
       color: #ffffff;
       background-color: rgba(0, 0, 0, 0.5);
-      padding: px2rem(5px) px2rem(7.5px);
+      padding: px2rem(20px) px2rem(30px);
       .am-icon {
-        width: px2rem(15px);
-        height: px2rem(25px);
+        width: px2rem(30px);
+        height: px2rem(50px);
       }
       .am-icon-loading {
         -webkit-transition-property: -webkit-transform;

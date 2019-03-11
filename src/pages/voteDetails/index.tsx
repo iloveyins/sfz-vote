@@ -5,6 +5,7 @@ import Paydialog from '../Apply/index';
 import { wxInit } from '../../utils/wxShare'
 import { observer, inject } from 'mobx-react'
 import { RouteComponentProps } from 'react-router';
+import { async } from 'q';
 
 export interface IProps extends RouteComponentProps {
     detial: object,
@@ -46,13 +47,16 @@ class VoteDetails extends Component<IProps, IState> {
         this.state = {
             isAlert: false
         }
+    }
 
+    getentryInfo = async () => {
+        const params = new URLSearchParams(this.props.location.search);
+        alert(params.get("tid"))
+        const r = await this.props.entryInfo({ tid: params.get("tid"), uid: params.get("uid") });
     }
 
     componentDidMount() {
-        const params = new URLSearchParams(this.props.location.state);
-        this.props.entryInfo({ tid: params.get("tid"), uid: params.get("uid") });
-
+        this.getentryInfo();
         wxInit(
             this.props.itemDetails.name,
             window.location.href,
@@ -61,9 +65,6 @@ class VoteDetails extends Component<IProps, IState> {
     }
 
     render() {
-
-
-
         let self = this;
         const dataDetail = {
             img: '',
@@ -134,6 +135,5 @@ class VoteDetails extends Component<IProps, IState> {
 
 export default inject(({ home, status }) => ({
     itemDetails: home.itemDetails,
-    entryInfo: home.entryInfo,
-
+    entryInfo: home.entryInfo
 }))(observer(VoteDetails));

@@ -79,6 +79,7 @@ export class Home {
 
     @action.bound
     async entryInfo(obj: { tid: string, uid: string }) {
+        alert('tid:' + obj.tid + "  uid:" + obj.uid)
         const { data } = await http.post(`commonh/entryInfo `, {
             tid: obj.tid,
             uid: obj.uid
@@ -88,6 +89,7 @@ export class Home {
             this.itemDetails = data.entryInfo;
             console.log(data);
         });
+        return data;
     }
 }
 

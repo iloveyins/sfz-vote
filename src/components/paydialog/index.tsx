@@ -6,7 +6,7 @@ import { inject, observer, propTypes } from 'mobx-react';
 
 interface IProps {
     weChatExternalPay?(): string,
-    weChatPay?(): string
+    weChatPay?(obj: {}): string
 }
 
 @inject(({ pay, status }) => ({
@@ -39,12 +39,17 @@ export default class Paydialog extends React.Component<IProps>{
     onWeChatExternalPay = async () => {
         if (!this.isWeiXin()) {
             var s = this.props.weChatExternalPay && await this.props.weChatExternalPay();
-            // window.location.href = s ;
-            window.open(s);
+            s && (window.location.href = s);
         } else {
-            var r = this.props.weChatPay && await this.props.weChatPay();
+            var r = this.props.weChatPay && await this.props.weChatPay({
+                tid: "22472da731a9404abb4001723da73ab9",
+                uid: window.localStorage.getItem('sfzvoteuid'),
+                tuid: "",
+                openId: window.localStorage.getItem('sfzvoteappId'),
+                orderType: "2",
+                voteNum: "10"
+            });
             r && (window.location.href = r)
-            // window.open(r);
         }
     }
 

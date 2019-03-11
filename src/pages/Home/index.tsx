@@ -6,6 +6,7 @@ import { Pagination } from '../../components/index';
 import { wxInit } from '../../utils/wxShare.js';
 import { inject, observer } from 'mobx-react';
 import { Home as HomeStore } from '../../store/home';
+import { url } from 'inspector';
 
 
 interface IProps extends RouteComponentProps {
@@ -41,7 +42,7 @@ class Home extends React.Component<IProps, IState>{
     constructor(props: IProps, context: IState) {
         super(props, context);
 
-        this.getList({ pageSize: 10, pageNumber: 2 });
+        this.getList({ pageSize: 10, pageNumber: 2, tid: "22472da731a9404abb4001723da73ab9" });
 
         if (this.isWeiXin()) {
             this.weChatAuthorized();
@@ -51,11 +52,11 @@ class Home extends React.Component<IProps, IState>{
         this.props.itemInfo("22472da731a9404abb4001723da73ab9");
     }
 
-    async getList(obj: { pageSize: number, pageNumber: number }) {
+    async getList(obj: { pageSize: number, pageNumber: number, tid: string }) {
         await this.props.getList({
             pageSize: obj.pageSize,
             pageNumber: obj.pageNumber,
-            tid: '22472da731a9404abb4001723da73ab9'
+            tid: obj.tid
         }
         );
     }
@@ -113,7 +114,6 @@ class Home extends React.Component<IProps, IState>{
 
                 // this.props.history.push({
                 //     pathname: 'details',
-
                 //     state: {
                 //         tid: obj.tid,
                 //         uid: obj.uid,
@@ -130,7 +130,7 @@ class Home extends React.Component<IProps, IState>{
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
                 // }, 3000)
-                this.getList({ pageSize: obj.pageCount, pageNumber: obj.pageCurr });
+                this.getList({ pageSize: obj.pageCount, pageNumber: obj.pageCurr, tid: "22472da731a9404abb4001723da73ab9" });
             }
         }
 

@@ -6,11 +6,14 @@ import './index.scss';
 import Personal from './components/Personal/index';
 import Team from './components/Team/index';
 import { inject, observer } from 'mobx-react';
+import { RouteComponentProps } from 'react-router';
 
-interface IProps {
+interface IProps extends RouteComponentProps {
     postSignUp(obj: FormData): void,
+    weChatPay(obj: object): object,
     loading: Boolean,
     setLoading(val: Boolean): void,
+    WCPayPramas: {}
 }
 
 interface IState {
@@ -26,13 +29,16 @@ interface IState {
         age: any,
         captcha: string
         declaration: string
-    }
+    },
+    tuid: string
 }
 
-@inject(({ signUp, status }) => ({
+@inject(({ signUp, status, pay }) => ({
     postSignUp: signUp.postSignUp,
     loading: status.loading,
-    setLoading: status.setLoading
+    setLoading: status.setLoading,
+    weChatPay: pay.weChatPay,
+    WCPayPramas: pay.WCPayPramas
 }))
 
 @observer
@@ -65,14 +71,56 @@ class SignUp extends React.Component<IProps, IState>{
             declaration: this.state.fromData.declaration,
             ageRegion: "",
         }
-        form.append("coverFile[0]", this.state.fromData.files[0].file);
+        form.append("coverFile", this.state.fromData.files[0].file);
 
+        form.append('data', JSON.stringify({
+            entryInfo: {
+                uid: "9c651381cb154e4196625fb1776e56e5",
+                tid: "22472da731a9404abb4001723da73ab9",
+                entryType: 1,
+                name: this.state.fromData.name,
+                link_phone: this.state.fromData.phone,
+                sex: this.state.fromData.sex,
+                birthday: '1995-07-07',
+                declaration: this.state.fromData.declaration,
+                ageRegion: "",
+                captcha: "111111"
+            }
+        }))
 
         this.postSign(form);
     }
 
     async postSign(form) {
-        await this.props.postSignUp(form);
+        const r = await this.props.postSignUp(form);
+        console.log(r);
+
+        //@ts-ignore
+        if (typeof window.WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
+                //@ts-ignore
+            } else if (document.attachEvent) {
+                //@ts-ignore
+                document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady);
+                //@ts-ignore
+                document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
+            }
+        } else {
+            this.onBridgeReady();
+        }
+
+    }
+
+    onBridgeReady() {
+        this.props.weChatPay && this.props.weChatPay({
+            tid: "22472da731a9404abb4001723da73ab9",
+            uid: window.localStorage.getItem('sfzvoteuid'),
+            tuid: "",
+            openId: window.localStorage.getItem('sfzvoteappId'),
+            orderType: "2",
+            voteNum: "10"
+        });
     }
 
     constructor(props: IProps, context: IState) {
@@ -90,8 +138,11 @@ class SignUp extends React.Component<IProps, IState>{
                 age: 0,
                 declaration: "",
                 captcha: ""
-            }
+            },
+            tuid: ""
         };
+
+
     }
 
     render() {

@@ -33,8 +33,9 @@ const VoteList = (props: IProps) => {
         e.stopPropagation();
         if (isWeiXin()) {
             const code = voteFree && await voteFree({
-                tid: location.get('tid'),
-                uid: window.localStorage["sfzvoteuid"], tuid: e.currentTarget.dataset.uid
+                tid: '22472da731a9404abb4001723da73ab9',
+                uid: window.localStorage["sfzvoteuid"],
+                tuid: e.currentTarget.dataset.uid
             });
             if (code === '0') {
                 var c = "感谢您对“xxx”的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。"
@@ -62,7 +63,6 @@ const VoteList = (props: IProps) => {
             const code = voteCheck && await voteCheck({ tid: '22472da731a9404abb4001723da73ab9' });
             if (code === '0') {
                 props.history.push('Apply');
-
             }
         }
     };

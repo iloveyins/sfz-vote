@@ -1,11 +1,13 @@
 
 import axios from 'axios';
-import { string } from 'prop-types';
+import Toast from '../components/toast/index'
 
 //如果是开发环境
 console.log(process.env.NODE_ENV);
+
 if (process.env.NODE_ENV == 'development') {
-    axios.defaults.baseURL = "https://www.nihaotime.com/timeVoting";
+    axios.defaults.baseURL = "http://192.168.0.167:8081/timeVoting";
+    // axios.defaults.baseURL = "https://www.nihaotime.com/timeVoting/";
 } else {
     axios.defaults.baseURL = "https://www.nihaotime.com/timeVoting/";
     // axios.defaults.baseURL = "http://192.168.0.146:8080/timeVoting/";
@@ -18,9 +20,6 @@ const http = axios.create({
 
 http.interceptors.request.use(
     config => {
-        config.params = {
-            token: localStorage.getItem("token")
-        };
         return config;
     },
     err => {
@@ -33,9 +32,8 @@ http.interceptors.request.use(
 http.interceptors.response.use(
     //@ts-ignore
     res => {
-
         if (typeof res.data == "string") {
-            console.log(res.data)
+            // console.log(res.data)
             return res;
         }
         if (res.data.code == 0) {
@@ -43,7 +41,8 @@ http.interceptors.response.use(
                 { data: res.data } :
                 { data: { ...res.data.data } };
         } else {
-            alert(res.data.msg);
+            alert(res.data.msg)
+            // Toast.fail(res.data.msg);
             return Promise.reject();
         }
     },
