@@ -8,11 +8,10 @@ function wxInit(title, link, imgUrl, desc) {
     //通过正则表达式匹配ua中是否含有MicroMessenger字符串
     if (ua.match(/MicroMessenger/i) == 'micromessenger') {
         //从后台获取签名信息
-        alert(window.location.href.split('#')[0])
+
         axios.post(`/commonh/getShareParam`, {
-            shareUrl: encodeURIComponent("https://www.nihaotime.com/voting/")
+            shareUrl: encodeURIComponent(window.location.href.split('#')[0])
         }).then((r) => {
-            alert(r.data.noncestr)
             //微信
             wxConfig(r.data, title, link, imgUrl, desc);
             // QQInit(title, desc, imgUrl);
@@ -52,9 +51,8 @@ function wxInit(title, link, imgUrl, desc) {
 };
 
 function wxConfig(data, title, link, imgUrl, desc) {
-
     window.wx.config({ //微信分享
-        debug: true,//开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false,//开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: data.appid, // 必填，公众号的唯一标识
         timestamp: data.timestamp, // 必填，生成签名的时间戳
         nonceStr: data.noncestr, //必填， 生成签名的随机串
@@ -68,6 +66,16 @@ function wxConfig(data, title, link, imgUrl, desc) {
         //分享到朋友圈 QQ空间
         window.wx.updateTimelineShareData({
             title: title, // 分享标题
+            link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: imgUrl, // 分享图标
+            success: function () {
+                // 设置成功
+            }
+        });
+        //朋友与QQ好友
+        window.wx.updateAppMessageShareData({
+            title: title, // 分享标题
+            desc: desc, // 分享描述
             link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
             imgUrl: imgUrl, // 分享图标
             success: function () {
@@ -109,16 +117,7 @@ function wxConfig(data, title, link, imgUrl, desc) {
             }
         });
 
-        //朋友与QQ好友
-        window.wx.updateAppMessageShareData({
-            title: title, // 分享标题
-            desc: desc, // 分享描述
-            link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: imgUrl, // 分享图标
-            success: function () {
-                // 设置成功
-            }
-        });
+
 
         //微博
         window.wx.onMenuShareWeibo({

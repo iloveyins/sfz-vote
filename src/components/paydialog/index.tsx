@@ -43,7 +43,8 @@ export default class Paydialog extends React.Component<IProps>{
             window.open(s);
         } else {
             var r = this.props.weChatPay && await this.props.weChatPay();
-            window.open(r);
+            r && (window.location.href = r)
+            // window.open(r);
         }
     }
 

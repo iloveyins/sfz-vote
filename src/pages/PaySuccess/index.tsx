@@ -36,7 +36,7 @@ export default class PaySuccess extends React.Component<IProps, IState> {
     componentDidMount() {
         setTimeout(() => {
             // this.onClose("modal1");
-            // this.props.history.push('/');
+            this.props.history.push('/');
         }, 2000);
     }
     showModal = key => (e) => {

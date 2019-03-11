@@ -62,6 +62,7 @@ const VoteList = (props: IProps) => {
             const code = voteCheck && await voteCheck({ tid: '22472da731a9404abb4001723da73ab9' });
             if (code === '0') {
                 props.history.push('Apply');
+
             }
         }
     };

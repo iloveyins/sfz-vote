@@ -66,26 +66,7 @@ class SignUp extends React.Component<IProps, IState>{
             ageRegion: "",
         }
         form.append("coverFile[0]", this.state.fromData.files[0].file);
-        // form.append('data',JSON.stringify({
-        //     uid: "",
-        //     tid: "",
-        //     entryType: 1,
-        //     name: '',
-        //     link_phone: 1111111111,
-        //     sex: '',
-        //     birthday: '',
-        //     declaration: '',
-        //     ageRegion: "",
-        // }))
-        // form.append("uid", "");
-        // form.append("tid", "");
-        // form.append("entryType", "1");
-        // form.append("name", "1");
-        // form.append("link_phone", "1");
-        // form.append("sex", "1");
-        // form.append("birthday", "");
-        // form.append("declaration", "234");
-        // form.append("ageRegion", "");
+
 
         this.postSign(form);
     }

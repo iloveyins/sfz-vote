@@ -80,8 +80,8 @@ export class Home {
     @action.bound
     async entryInfo(obj: { tid: string, uid: string }) {
         const { data } = await http.post(`commonh/entryInfo `, {
-            tid: "22472da731a9404abb4001723da73ab9",
-            uid: "a9db1cb2a7c44073b75d0f5b58aa6a82"
+            tid: obj.tid,
+            uid: obj.uid
         });
 
         runInAction(() => {

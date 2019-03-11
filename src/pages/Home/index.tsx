@@ -91,7 +91,7 @@ class Home extends React.Component<IProps, IState>{
         const redirect_uri = 'https://www.nihaotime.com/voting/';
         if (code == null || code == '') {
             window.localStorage.setItem('sfzvoteappId', "")
-            //window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+            window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
         } else {
             var appid = window.localStorage.getItem('sfzvoteappId');
             if (appid == undefined || appid == null || appid == "") {
@@ -107,8 +107,18 @@ class Home extends React.Component<IProps, IState>{
         const data = {
             data: [],
             onWithRouter: (obj: { tid: string, uid: string }) => {
-                this.props.entryInfo({ tid: obj.tid, uid: obj.uid });
-                this.props.history.push('details');
+                // this.props.entryInfo({ tid: obj.tid, uid: obj.uid });
+
+                this.props.history.push(`details/?uid=${obj.uid}&tid=${obj.tid}`);
+
+                // this.props.history.push({
+                //     pathname: 'details',
+
+                //     state: {
+                //         tid: obj.tid,
+                //         uid: obj.uid,
+                //     }
+                // })
             },
             isVote: false
         }
