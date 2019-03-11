@@ -42,14 +42,15 @@ export class Home {
             }
         )
         runInAction(() => {
-            console.log(data);
             if (!window.localStorage) {
                 return false;
             } else {
                 //主逻辑业务
                 var storage = window.localStorage;
-                alert(data.uid)
+                console.log(data);
                 storage.setItem("sfzvoteuid", data.uid);
+                storage.setItem("sfzvoteappId", JSON.stringify({ data: data.openId, time: 30 * 24 * 60 * 60 * 1000 }));
+                storage.setItem("sfzvotelogindom", data.loginRandom);
             }
         });
     }
@@ -79,8 +80,8 @@ export class Home {
     @action.bound
     async entryInfo(obj: { tid: string, uid: string }) {
         const { data } = await http.post(`commonh/entryInfo `, {
-            tid: "22472da731a9404abb4001723da73ab9",
-            uid: "a9db1cb2a7c44073b75d0f5b58aa6a82"
+            tid: obj.tid,
+            uid: obj.uid
         });
 
         runInAction(() => {

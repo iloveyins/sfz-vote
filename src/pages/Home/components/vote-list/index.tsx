@@ -9,9 +9,8 @@ import { async } from 'q';
 interface IProps extends RouteComponentProps {
     data: any,
     onWithRouter(obj: object): void,
-    voteFree?(obj: object): void,
+    voteFree?(obj: object): string,
     voteCheck?(obj: object): string,
-    isVote: boolean
 }
 
 const isWeiXin = () => {
@@ -24,29 +23,47 @@ const isWeiXin = () => {
     }
 }
 
-const getUrl = (name) => {
-
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-    var r = window.location.search.substr(1).match(reg);
-    console.log(r);
-
-    if (r != null) return unescape(r[2]); return null;
-}
-
 const VoteList = (props: IProps) => {
 
     const { data, onWithRouter, voteFree, voteCheck } = props;
 
-    const voteClick = async(e: React.MouseEvent<HTMLAnchorElement & {dataset: {uid: string}}>) => {
+    const location = new URLSearchParams(props.location.search);
+
+    const voteClick = async (e: React.MouseEvent<HTMLAnchorElement & { dataset: { uid: string } }>) => {
         e.stopPropagation();
         if (isWeiXin()) {
-            voteFree && voteFree({ tid: getUrl('tid'), uid: window.localStorage["sfzvoteuid"], tuid: e.currentTarget.dataset.uid });
+            const code = voteFree && await voteFree({
+                tid: location.get('tid'),
+                uid: window.localStorage["sfzvoteuid"], tuid: e.currentTarget.dataset.uid
+            });
+            if (code === '0') {
+                var c = "感谢您对“xxx”的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。"
+                props.history.push({
+                    pathname: '/votingDialog',
+                    state: {
+                        content: c,
+                        title: "投票成功",
+                        success: true,
+                        shareImg: true
+                    }
+                })
+            } else {
+                var c = "您的可投票次数已经达到上限"
+                props.history.push({
+                    pathname: '/votingDialog',
+                    state: {
+                        content: c,
+                        title: "非常抱歉",
+                        success: false
+                    }
+                })
+            }
         } else {
             const code = voteCheck && await voteCheck({ tid: '22472da731a9404abb4001723da73ab9' });
             if (code === '0') {
                 props.history.push('Apply');
-            }
 
+            }
         }
     };
 
@@ -79,5 +96,4 @@ export default inject(({ signUp, home, status }) => ({
     voteCheck: signUp.voteCheck,
     voteFree: signUp.voteFree,
     data: home.listData,
-    isVote: signUp.isVote
 }))(observer(withRouter(VoteList)));

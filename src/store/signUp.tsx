@@ -51,8 +51,8 @@ class signUp {
     async voteCheck(obj: Object) {
         const { data } = await axios.post(`commonh/voteCheck`, obj);
         runInAction(() => {
-            data.code == '0' ? this.isVote = true : this.isVote = false;
-            console.log('isVote 修改完毕', this.isVote);
+            // data.code == '0' ? this.isVote = true : this.isVote = false;
+            // console.log('isVote 修改完毕', this.isVote);
         });
         return data.code;
     }
@@ -62,8 +62,9 @@ class signUp {
     async voteFree(obj: { tid: string, uid: string, tuid: string }) {
         const { data } = await axios.post(`businessh/voteFree `, obj);
         runInAction(() => {
-
+            console.log('isVote 修改完毕', this.isVote);
         });
+        return data.code;
     }
 }
 
