@@ -75,18 +75,27 @@ class SignUp extends React.Component<IProps, IState>{
 
         form.append('data', JSON.stringify({
             entryInfo: {
-                uid: "9c651381cb154e4196625fb1776e56e5",
+                uid: "9c651381cb154e4196125fb0548e82e6",
                 tid: "22472da731a9404abb4001723da73ab9",
                 entryType: 1,
-                name: this.state.fromData.name,
-                link_phone: this.state.fromData.phone,
-                sex: this.state.fromData.sex,
+                name: 'dashu',
+                link_phone: 15580972180,
+                sex: '2',
                 birthday: '1995-07-07',
-                declaration: this.state.fromData.declaration,
+                declaration: '测试',
                 ageRegion: "",
                 captcha: "111111"
             }
         }))
+        // form.append("uid", "");
+        // form.append("tid", "");
+        // form.append("entryType", "1");
+        // form.append("name", "1");
+        // form.append("link_phone", "1");
+        // form.append("sex", "1");
+        // form.append("birthday", "");
+        // form.append("declaration", "234");
+        // form.append("ageRegion", "");
 
         this.postSign(form);
     }

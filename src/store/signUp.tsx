@@ -18,6 +18,11 @@ class signUp {
         const { data } = await axios.post(
             `businessh/entrying`,
             obj,
+            {
+                headers: {
+                    "Content-Type": 'application/x-www-form-urlencoded'
+                },
+            }
         );
         runInAction(() => {
             console.log(data);

@@ -1,92 +1,91 @@
 @import "../../index.scss";
 .sign-up {
-  background-color: #000000;
-  color: #ffffff;
-  .sign-up-img {
-    width: 100%;
-    height: px2rem(455px);
-  }
-  .sign-up-content {
-    padding: px2rem(40px);
-  }
-  .types-entries {
-    display: flex;
-    font-size: px2rem(32px);
-    .types-item {
-      flex: 1;
-    }
-    .sign-up-content {
-    }
-  }
-  .my-radio .am-radio {
-    padding: 2.5px;
-    border: 1px solid #f5df5e;
-    border-radius: 50%;
-    margin-right: 5px;
-  }
-  .activity-price {
-    color: #f80a20;
-    font-size: px2rem(42px);
-    text-align: center;
-  }
-  .explanation {
-    margin-top: px2rem(108px);
-    width: px2rem(670px);
-    border: px2rem(2px) solid rgba(231, 211, 96, 1);
-    border-radius: 10px;
-    p {
-      font-size: px2rem(26px);
-      padding: 10px 13px;
-      color: #e7d360;
-    }
-  }
-  .explanation-text {
-    width: px2rem(174px);
-    height: px2rem(57px);
-    background: rgba(222, 200, 76, 1);
-    border-radius: 29px;
-    font-size: px2rem(28px);
-    text-align: center;
-    line-height: px2rem(57px);
-    color: #000000;
-    margin-top: -10px;
-    margin-left: px2rem(31px);
-  }
-  .am-radio-inner::after {
-    border-color: #f5df5e !important;
-  }
-  .sign-btn {
-    display: block;
-    background-color: #858587;
-    height: px2rem(72px);
-    width: px2rem(370px);
-    border-radius: 36px;
-    text-align: center;
-    line-height: px2rem(72px);
-    font-size: px2rem(32px);
-    margin: px2rem(112px) auto;
-    font-weight: 500;
-    color: #ffffff;
-    border: 0;
-  }
-  .sign-btn-ok {
-    background-color: #fd7327;
-  }
-  .am-list-item {
-    height: px2rem(74px);
-    min-height: px2rem(74px);
-    border: px2rem(2px) solid rgba(222, 200, 76, 1);
-    border-radius: px2rem(20px);
     background-color: #000000;
     color: #ffffff;
-  }
-  .am-list-item .am-list-line .am-list-content {
-    color: #ffffff;
-  }
-  .am-list-item .am-input-label {
-    color: #ffffff;
-  }
-  .am-list-item .am-input-control input {
-    color: #ffffff;
-  }
+    .sign-up-img {
+        width: 100%;
+        height: px2rem(455px);
+    }
+    .sign-up-content {
+        padding: px2rem(40px);
+    }
+    .types-entries {
+        display: flex;
+        font-size: px2rem(32px);
+        .types-item {
+            flex: 1;
+        }
+        .sign-up-content {}
+    }
+    .my-radio .am-radio {
+        padding: 2.5px;
+        border: 1px solid #f5df5e;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+    .activity-price {
+        color: #f80a20;
+        font-size: px2rem(42px);
+        text-align: center;
+    }
+    .explanation {
+        margin-top: px2rem(108px);
+        width: px2rem(670px);
+        border: px2rem(2px) solid rgba(231, 211, 96, 1);
+        border-radius: 10px;
+        p {
+            font-size: px2rem(26px);
+            padding: 10px 13px;
+            color: #e7d360;
+        }
+    }
+    .explanation-text {
+        width: px2rem(174px);
+        height: px2rem(57px);
+        background: rgba(222, 200, 76, 1);
+        border-radius: 29px;
+        font-size: px2rem(28px);
+        text-align: center;
+        line-height: px2rem(57px);
+        color: #000000;
+        margin-top: -10px;
+        margin-left: px2rem(31px);
+    }
+    .am-radio-inner::after {
+        border-color: #f5df5e !important;
+    }
+    .sign-btn {
+        display: block;
+        background-color: #858587;
+        height: px2rem(72px);
+        width: px2rem(370px);
+        border-radius: 36px;
+        text-align: center;
+        line-height: px2rem(72px);
+        font-size: px2rem(32px);
+        margin: px2rem(112px) auto;
+        font-weight: 500;
+        color: #ffffff;
+        border: 0;
+    }
+    .sign-btn-ok {
+        background-color: #fd7327;
+    }
+    .am-list-item {
+        height: px2rem(74px);
+        min-height: px2rem(74px);
+        border: px2rem(2px) solid rgba(222, 200, 76, 1);
+        border-radius: px2rem(20px);
+        background-color: #000000;
+        color: #ffffff;
+    }
+    .am-list-item .am-list-line .am-list-content {
+        color: #ffffff;
+    }
+    .am-list-item .am-input-label {
+        color: #ffffff;
+    }
+    .am-list-item .am-input-control input {
+        color: #ffffff;
+    }
 }
