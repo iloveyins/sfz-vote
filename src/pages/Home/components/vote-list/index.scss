@@ -65,6 +65,19 @@
   margin: 0 auto;
 }
 
+.btn-vote-ok {
+  width: px2rem(218px);
+  height: px2rem(65px);
+  display: block;
+  border-radius: px2rem(32px);
+  font-size: px2rem(28px);
+  color: #ffffff;
+  text-align: center;
+  line-height: px2rem(65px);
+  margin: 0 auto;
+  background-color: #858587;
+}
+
 .item-content {
   padding: px2rem(19px) px2rem(20px);
 }

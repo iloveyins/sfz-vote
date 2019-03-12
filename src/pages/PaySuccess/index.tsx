@@ -40,7 +40,7 @@ export default class PaySuccess extends React.Component<IProps, IState> {
         }, 2000);
     }
     showModal = key => (e) => {
-        e.preventDefault(); // 修复 Android 上点击穿透
+        e.preventDefault();
         this.setState({
             [key]: true,
         });
@@ -63,9 +63,8 @@ export default class PaySuccess extends React.Component<IProps, IState> {
     render() {
 
         return (
-            <div >
+            <div>
                 <Modal
-
                     visible={this.state.modal1}
                     maskClosable={false}
                     onClose={this.onClose('modal1')}

@@ -4,7 +4,7 @@ import './index.scss';
 import Paydialog from '../Apply/index';
 import { wxInit } from '../../utils/wxShare'
 import { observer, inject } from 'mobx-react'
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { async } from 'q';
 
 export interface IProps extends RouteComponentProps {
@@ -33,12 +33,22 @@ export interface IProps extends RouteComponentProps {
         voteNum: string
     },
     entryInfo(obj: object): void,
+    voteFree?(obj: object): string,
+    voteCheck?(obj: object): string,
 }
 
 export interface IState {
     isAlert: boolean
 }
-
+const isWeiXin = () => {
+    var ua = window.navigator.userAgent.toLowerCase();
+    //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+    if (/MicroMessenger/i.test(ua)) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 class VoteDetails extends Component<IProps, IState> {
 
@@ -51,12 +61,7 @@ class VoteDetails extends Component<IProps, IState> {
 
     getentryInfo = async () => {
         const params = new URLSearchParams(this.props.location.search);
-        alert(params.get("tid"))
         const r = await this.props.entryInfo({ tid: params.get("tid"), uid: params.get("uid") });
-    }
-
-    componentDidMount() {
-        this.getentryInfo();
         wxInit(
             this.props.itemDetails.name,
             window.location.href,
@@ -64,18 +69,49 @@ class VoteDetails extends Component<IProps, IState> {
             this.props.itemDetails.declaration);
     }
 
+    componentDidMount() {
+        this.getentryInfo();
+    }
+
     render() {
         let self = this;
-        const dataDetail = {
-            img: '',
-            title: '',
-            shareImg: '',
-            content: '',
-            onBugCount() {
-                self.setState({ isAlert: false })
+        const voteClick = async (e: React.MouseEvent<HTMLAnchorElement & { dataset: { uid: string } }>) => {
+            e.stopPropagation();
+            if (isWeiXin()) {
+                const code = this.props.voteFree && await this.props.voteFree({
+                    tid: window.localStorage["tid"],
+                    uid: window.localStorage["sfzvoteuid"],
+                    tuid: e.currentTarget.dataset.uid
+                });
+                if (code === '0') {
+                    var c = `感谢您对${this.props.itemDetails.name}的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。`
+                    this.props.history.push({
+                        pathname: '/votingDialog',
+                        state: {
+                            content: c,
+                            title: "投票成功",
+                            success: true,
+                            shareImg: true
+                        }
+                    })
+                } else {
+                    var c = "您的可投票次数已经达到上限"
+                    this.props.history.push({
+                        pathname: '/votingDialog',
+                        state: {
+                            content: c,
+                            title: "非常抱歉",
+                            success: false
+                        }
+                    })
+                }
+            } else {
+                const code = this.props.voteCheck && await this.props.voteCheck({ tid: window.localStorage.getItem("tid") });
+                if (code == '0') {
+                    this.props.history.push('Apply');
+                }
             }
-        }
-
+        };
         const { itemDetails } = this.props;
         return (
             <div className="knowledge-details">
@@ -123,9 +159,8 @@ class VoteDetails extends Component<IProps, IState> {
                     </section>
                     <p className="dashed-style"></p>
                     <section className="detial-footer">
-                        <span onClick={() => {
-                        }}>为TA投票</span>
-                        <span>分享拉票</span>
+                        <span onClick={voteClick}>为TA投票</span>
+                        <span></span>
                     </section>
                     <section className="bottom-empty"></section>
                 </div>
@@ -134,7 +169,9 @@ class VoteDetails extends Component<IProps, IState> {
     }
 }
 
-export default inject(({ home, status }) => ({
+export default inject(({ signUp, home }) => ({
+    voteCheck: signUp.voteCheck,
+    voteFree: signUp.voteFree,
     itemDetails: home.itemDetails,
     entryInfo: home.entryInfo
-}))(observer(VoteDetails));
+}))(observer(withRouter(VoteDetails)));

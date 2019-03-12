@@ -4,41 +4,40 @@ import React from 'react';
 import './index.scss';
 import { Paydialog } from '../../components/index'
 import { string } from 'prop-types';
+import { withRouter, RouteComponentProps } from 'react-router';
 
-export interface IProps {
+export interface IProps extends RouteComponentProps {
     name: string;
     show: boolean;
 }
 
 export interface IState {
-    isAlert: boolean
+    isAlert: boolean,
+    price: number,
+    payCount: number
 }
 
-export default class Apply extends React.Component<IProps, IState> {
+class Apply extends React.Component<IProps, IState> {
 
     constructor(props: IProps, context: IState) {
         super(props, context);
         this.state = {
-            isAlert: false
+            isAlert: false,
+            price: 0,
+            payCount: 0
         }
     }
 
     render() {
-        let self = this;
-        const data = {
-            img: '',
-            title: '',
-            shareImg: '',
-            content: '',
-            onBugCount() {
-                self.setState({ isAlert: false })
-            },
+        let pay = {
+            price: this.state.price,
+            payCount: this.state.payCount
         }
 
         return (
             <div id="apply">
                 {
-                    this.state.isAlert ? <Paydialog /> : ""
+                    this.state.isAlert ? <Paydialog {...pay} /> : ""
                 }
                 <div className="apply-wrap">
                     <div className="apply-money">
@@ -55,7 +54,9 @@ export default class Apply extends React.Component<IProps, IState> {
                                 <p className="pay-button"
                                     onClick={() => {
                                         this.setState({
-                                            isAlert: true
+                                            isAlert: true,
+                                            price: 10,
+                                            payCount: 10
                                         })
                                     }}>在线支付</p>
                             </div>
@@ -73,7 +74,11 @@ export default class Apply extends React.Component<IProps, IState> {
                                     <p>金额：50元</p>
                                 </div>
                                 <p className="pay-button" onClick={() => {
-                                    this.setState({ isAlert: true });
+                                    this.setState({
+                                        isAlert: true,
+                                        price: 50,
+                                        payCount: 55
+                                    });
                                 }}>在线支付</p>
                             </div>
                         </div>
@@ -89,7 +94,13 @@ export default class Apply extends React.Component<IProps, IState> {
                                     <p>内容：每人每天投票120次</p>
                                     <p>金额：100元</p>
                                 </div>
-                                <p className="pay-button">在线支付</p>
+                                <p className="pay-button" onClick={() => {
+                                    this.setState({
+                                        isAlert: true,
+                                        price: 120,
+                                        payCount: 100
+                                    });
+                                }}>在线支付</p>
                             </div>
                         </div>
                     </div>
@@ -103,3 +114,5 @@ export default class Apply extends React.Component<IProps, IState> {
         )
     }
 }
+
+export default withRouter(Apply);

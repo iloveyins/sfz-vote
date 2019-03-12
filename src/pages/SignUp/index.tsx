@@ -7,6 +7,7 @@ import Personal from './components/Personal/index';
 import Team from './components/Team/index';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
+import { string } from 'prop-types';
 
 interface IProps extends RouteComponentProps {
     postSignUp(obj: FormData): void,
@@ -28,7 +29,8 @@ interface IState {
         files: any,
         age: any,
         captcha: string
-        declaration: string
+        declaration: string,
+        ageRegion: string
     },
     tuid: string
 }
@@ -43,6 +45,15 @@ interface IState {
 
 @observer
 class SignUp extends React.Component<IProps, IState>{
+
+    private data = {
+        appId: string,
+        timeStamp: string,
+        nonceStr: string,
+        package: string,
+        signType: string,
+        sign: string
+    }
 
     onChange = (isTeam) => {
         this.setState({ isTeam });
@@ -60,50 +71,27 @@ class SignUp extends React.Component<IProps, IState>{
     onSubmmit = () => {
         // FormData 对象
         var form = new FormData();
-        let data = {
-            uid: "",
-            tid: "",
-            entryType: 1,
-            name: this.state.fromData.name,
-            link_phone: this.state.fromData.phone,
-            sex: this.state.fromData.sex,
-            birthday: this.state.fromData.age,
-            declaration: this.state.fromData.declaration,
-            ageRegion: "",
-        }
         form.append("coverFile", this.state.fromData.files[0].file);
 
         form.append('data', JSON.stringify({
             entryInfo: {
-                uid: "9c651381cb154e4196125fb0548e82e6",
-                tid: "22472da731a9404abb4001723da73ab9",
-                entryType: 1,
-                name: 'dashu',
-                link_phone: 15580972180,
-                sex: '2',
-                birthday: '1995-07-07',
-                declaration: '测试',
-                ageRegion: "",
-                captcha: "111111"
+                uid: window.localStorage.getItem('sfzvoteuid'),
+                tid: window.localStorage.getItem("tid"),
+                entryType: this.state.isTeam,
+                name: this.state.fromData.name,
+                link_phone: this.state.fromData.phone,
+                sex: this.state.fromData.sex,
+                birthday: this.state.fromData.age,
+                declaration: this.state.fromData.declaration,
+                ageRegion: this.state.fromData.ageRegion,
+                captcha: this.state.fromData.captcha
             }
         }))
-        // form.append("uid", "");
-        // form.append("tid", "");
-        // form.append("entryType", "1");
-        // form.append("name", "1");
-        // form.append("link_phone", "1");
-        // form.append("sex", "1");
-        // form.append("birthday", "");
-        // form.append("declaration", "234");
-        // form.append("ageRegion", "");
-
         this.postSign(form);
     }
 
     async postSign(form) {
         const r = await this.props.postSignUp(form);
-        console.log(r);
-
         //@ts-ignore
         if (typeof window.WeixinJSBridge == "undefined") {
             if (document.addEventListener) {
@@ -121,13 +109,13 @@ class SignUp extends React.Component<IProps, IState>{
 
     }
 
-    onBridgeReady() {
+    onBridgeReady = async () => {
         this.props.weChatPay && this.props.weChatPay({
-            tid: "22472da731a9404abb4001723da73ab9",
+            tid: window.localStorage.getItem("tid"),
             uid: window.localStorage.getItem('sfzvoteuid'),
             tuid: "",
             openId: window.localStorage.getItem('sfzvoteappId'),
-            orderType: "2",
+            orderType: "1",
             voteNum: "10"
         });
     }
@@ -136,9 +124,8 @@ class SignUp extends React.Component<IProps, IState>{
         super(props, context);
         this.state = {
             date: new Date(),
-            isTeam: 0,
+            isTeam: 1,
             isError: false,
-
             fromData: {
                 name: "",
                 phone: "",
@@ -146,18 +133,17 @@ class SignUp extends React.Component<IProps, IState>{
                 sex: 0,
                 age: 0,
                 declaration: "",
-                captcha: ""
+                captcha: "",
+                ageRegion: ""
             },
             tuid: ""
         };
-
-
     }
 
     render() {
         const teamData = [
-            { value: 0, label: '个人' },
-            { value: 1, label: '团队' },
+            { value: 1, label: '个人' },
+            { value: 2, label: '团队' },
         ];
 
         const status = {
@@ -170,7 +156,8 @@ class SignUp extends React.Component<IProps, IState>{
                     files: any,
                     age: any,
                     declaration: string,
-                    captcha: string
+                    captcha: string,
+                    ageRegion: string
                 }
             }) => {
 
@@ -187,7 +174,8 @@ class SignUp extends React.Component<IProps, IState>{
                             sex: obj.fromData.sex,
                             age: obj.fromData.age,
                             declaration: obj.fromData.declaration,
-                            captcha: obj.fromData.captcha
+                            captcha: obj.fromData.captcha,
+                            ageRegion: obj.fromData.ageRegion
                         }
                     });
                 }
@@ -212,7 +200,7 @@ class SignUp extends React.Component<IProps, IState>{
                         ))}
                     </div>
                     {
-                        this.state.isTeam ? <Team  {...status} /> : <Personal {...status} />
+                        this.state.isTeam === 2 ? <Team  {...status} /> : <Personal {...status} />
                     }
                     <div className="activity-price">
                         活动费用：600元

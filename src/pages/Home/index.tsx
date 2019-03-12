@@ -6,8 +6,7 @@ import { Pagination } from '../../components/index';
 import { wxInit } from '../../utils/wxShare.js';
 import { inject, observer } from 'mobx-react';
 import { Home as HomeStore } from '../../store/home';
-import { url } from 'inspector';
-
+import { Loading } from '../../components/index'
 
 interface IProps extends RouteComponentProps {
     getList(obj: { pageSize: number, pageNumber: number, tid: string }): void,
@@ -19,7 +18,8 @@ interface IProps extends RouteComponentProps {
         picUrl: string
     },
     entryInfo(obj: object): void,
-    setLoading(obj: boolean): void
+    setLoading(obj: boolean): void,
+    loading: boolean
 }
 
 interface IState {
@@ -42,14 +42,6 @@ class Home extends React.Component<IProps, IState>{
     constructor(props: IProps, context: IState) {
         super(props, context);
 
-        this.getList({ pageSize: 10, pageNumber: 2, tid: "22472da731a9404abb4001723da73ab9" });
-
-        if (this.isWeiXin()) {
-            this.weChatAuthorized();
-        }
-
-        //获取详情页信息
-        this.props.itemInfo("22472da731a9404abb4001723da73ab9");
     }
 
     async getList(obj: { pageSize: number, pageNumber: number, tid: string }) {
@@ -72,7 +64,24 @@ class Home extends React.Component<IProps, IState>{
 
     componentWillMount() {
         const params = new URLSearchParams(this.props.location.search)
-        console.log(params.get('age'));
+        var ttid = params.get('tid') ? String(params.get('tid')) : "";
+        var t = "";
+        if (ttid) {
+            window.localStorage.setItem("tid", ttid);
+            t = String(window.localStorage.getItem("tid"));
+        } else {
+            t = String(window.localStorage.getItem("tid"));
+        }
+        this.getList({
+            pageSize: 10, pageNumber: 2, tid: t
+        });
+
+        if (this.isWeiXin()) {
+            this.weChatAuthorized();
+        }
+
+        //获取详情页信息
+        this.props.itemInfo(t);
     }
 
     async itemInfo(tid: string) {
@@ -90,35 +99,25 @@ class Home extends React.Component<IProps, IState>{
         const appId = 'wx615e5ac092e9c376';
         const code = this.getQueryString('code');
         const redirect_uri = 'https://www.nihaotime.com/voting/';
+        var appid = window.localStorage.getItem('sfzvoteappId');
+        var uid = window.localStorage.getItem('sfzvoteuid');
         if (code == null || code == '') {
-            window.localStorage.setItem('sfzvoteappId', "")
-            window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
-        } else {
-            var appid = window.localStorage.getItem('sfzvoteappId');
-            if (appid == undefined || appid == null || appid == "") {
-                //传入code
+            if (appid == undefined || appid == null || appid == ""
+                && uid == undefined || uid == null || uid == "") {
+                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
                 this.props.officLogin({ code });
             }
         }
     }
 
     render() {
-        const { itemData } = this.props;
+        const { itemData, location: { search }, loading } = this.props;
 
         const data = {
             data: [],
             onWithRouter: (obj: { tid: string, uid: string }) => {
-                // this.props.entryInfo({ tid: obj.tid, uid: obj.uid });
-
+                //跳转详情页
                 this.props.history.push(`details/?uid=${obj.uid}&tid=${obj.tid}`);
-
-                // this.props.history.push({
-                //     pathname: 'details',
-                //     state: {
-                //         tid: obj.tid,
-                //         uid: obj.uid,
-                //     }
-                // })
             },
             isVote: false
         }
@@ -129,8 +128,8 @@ class Home extends React.Component<IProps, IState>{
                 // this.props.setLoading(true);
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
-                // }, 3000)
-                this.getList({ pageSize: obj.pageCount, pageNumber: obj.pageCurr, tid: "22472da731a9404abb4001723da73ab9" });
+                // }, 2000);
+                this.getList({ pageSize: obj.pageCount, pageNumber: obj.pageCurr, tid: String(window.localStorage.getItem("tid")) });
             }
         }
 
@@ -151,8 +150,7 @@ class Home extends React.Component<IProps, IState>{
                         <img src={require("../../static/images/frame@3x.png")} alt="" />
                         <span className="text">活动规则</span>
                     </div>
-                    <p>
-                        {itemData.activityNotice}
+                    <p dangerouslySetInnerHTML={{ __html: itemData.activityNotice }}>
                     </p>
                 </div>
             </div>

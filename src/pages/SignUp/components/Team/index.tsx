@@ -3,6 +3,7 @@ import React from 'react';
 import { Radio, Picker, InputItem, List, ImagePicker } from 'antd-mobile';
 import './index.scss';
 import { inject, observer } from 'mobx-react';
+import { number } from 'prop-types';
 
 interface IProps {
     onStatusError({ errorStatus: boolean, fromData: { } }): void,  //回调方法
@@ -60,7 +61,7 @@ export default class Personal extends React.Component<IProps, IState> {
             imgHasError: false,
 
             statusError: [],
-            ageBracket: [],
+            ageBracket: ['1'],
         };
     }
 
@@ -146,8 +147,8 @@ export default class Personal extends React.Component<IProps, IState> {
                     name: this.state.name,
                     phone: this.state.phone,
                     files: this.state.files,
-                    age: this.state.date,
-                    declaration: this.state.declaration
+                    ageRegion: this.state.ageBracket[0],
+                    declaration: this.state.declaration,
                 }
             }
         );
@@ -198,14 +199,15 @@ export default class Personal extends React.Component<IProps, IState> {
                 <div className="content-item">
                     <Picker data={seasons} cols={1} className="forss"
                         value={this.state.ageBracket}
-                        onChange={ageBracket => this.setState({ ageBracket })}
+                        onChange={(ageBracket => { alert(ageBracket); this.setState({ ageBracket }) })}
                     >
                         <List.Item arrow="horizontal">* 年龄范围：</List.Item>
                     </Picker>
                 </div>
                 <div className="content-item">
                     <InputItem
-                        clear
+                        onChange={(declaration) => { this.setState({ declaration }) }}
+                        value={this.state.declaration}
                         placeholder="非必填"
                     >参赛宣言：</InputItem>
                 </div>

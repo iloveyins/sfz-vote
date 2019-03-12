@@ -31,7 +31,6 @@
       margin: 0 auto;
       left: 0;
       right: 0;
-      // background-image: url("../../static/images/button@3x.png");
     }
   }
   .list {
@@ -52,6 +51,7 @@
       padding: 10px 13px;
       color: #e7d360;
       margin-top: px2rem(20px);
+      line-height: 20px;
     }
     .activity-rules-header {
       display: flex;

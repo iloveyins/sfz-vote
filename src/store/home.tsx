@@ -32,8 +32,8 @@ export class Home {
         });
     }
 
-
-    @action.bound  //code
+    //code
+    @action.bound
     async officLogin(obj: { code: string }) {
         const { data } = await http.post(
             "commonh/officLogin",
@@ -47,9 +47,8 @@ export class Home {
             } else {
                 //主逻辑业务
                 var storage = window.localStorage;
-                console.log(data);
                 storage.setItem("sfzvoteuid", data.uid);
-                storage.setItem("sfzvoteappId", JSON.stringify({ data: data.openId, time: 30 * 24 * 60 * 60 * 1000 }));
+                storage.setItem("sfzvoteappId", JSON.stringify({ val: data.openId, timer: 24 * 60 * 60 * 1000 * 30 }));
                 storage.setItem("sfzvotelogindom", data.loginRandom);
             }
         });
@@ -79,7 +78,6 @@ export class Home {
 
     @action.bound
     async entryInfo(obj: { tid: string, uid: string }) {
-        alert('tid:' + obj.tid + "  uid:" + obj.uid)
         const { data } = await http.post(`commonh/entryInfo `, {
             tid: obj.tid,
             uid: obj.uid

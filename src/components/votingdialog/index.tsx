@@ -7,15 +7,16 @@ interface IProps extends RouteComponentProps {
     title: string,
     shareImg: string,
     content: string,
-    onBugCount(): void
 }
 export default class VotingDialog extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props);
     }
-
+    onBugCount = () => {
+        this.props.history.push('Apply');
+    }
     render() {
-        const { onBugCount, location: { state: { title, content, shareImg, success } } } = this.props;
+        const { location: { state: { title, content, shareImg, success } } } = this.props;
         return (
             <div className="dialog-detial">
                 <div className="dialog-wrap">
@@ -33,8 +34,11 @@ export default class VotingDialog extends React.Component<IProps> {
                                     </div> : ""
                             }
                             <div className="detial-footer">
-                                <span onClick={onBugCount}>购买投票次数</span>
-                                <span>分享拉票</span>
+                                <span onClick={this.onBugCount}>购买投票次数</span>
+                                <span onClick={
+                                    () => {
+                                        this.props.history.push('/');
+                                    }}>返回</span>
                             </div>
                         </div>
                     </div>
