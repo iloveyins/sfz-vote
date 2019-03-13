@@ -11,6 +11,7 @@ class Pay {
     @action.bound
     //微信内部支付
     async weChatPay(obj: { tid: string, uid: string, tuid: string, openId: string, orderType: string, voteNum: string }) {
+        obj.openId = JSON.parse(obj.openId).val;
         const { data } = await axios.post(`wxpay/jsapi`, {
             payFlow: {
                 tid: obj.tid,
@@ -36,10 +37,10 @@ class Pay {
             },
             function (res) {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
-                    alert("操作成功")
-                    window.location.href = window.location.host;
+                    return "0";
                 }
             });
+        return '1'
     }
 
     @action.bound
@@ -58,6 +59,26 @@ class Pay {
         runInAction(() => {
             console.log(data);
         });
+        return data;
+    }
+
+    @action.bound
+    //alipay支付
+    async aliExternalPay(obj: { tid: string, tuid: string, voteNum: string }) {
+        const { data } = await axios.post(`alipay/toPay.html`, {
+            payFlow: {
+                tid: obj.tid,
+                uid: "",
+                tuid: obj.tuid,
+                openId: "",
+                orderType: "2",
+                voteNum: obj.voteNum
+            },
+        });
+        runInAction(() => {
+            console.log(data);
+        });
+        alert(data);
         return data;
     }
 }

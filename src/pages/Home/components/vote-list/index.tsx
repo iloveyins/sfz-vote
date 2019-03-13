@@ -1,10 +1,8 @@
 import React from 'react';
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import './index.scss';
-import VoteDetails from '../../../voteDetails/index';
 
 import { observer, inject } from 'mobx-react'
-import { async } from 'q';
 
 interface IProps extends RouteComponentProps {
     data: any,
@@ -23,12 +21,15 @@ const isWeiXin = () => {
     }
 }
 
+
+
 const VoteList = (props: IProps) => {
 
     const { data, onWithRouter, voteFree, voteCheck } = props;
 
     const voteClick = async (e: React.MouseEvent<HTMLAnchorElement & { dataset: { uid: string } }>) => {
         e.stopPropagation();
+        var name = e.currentTarget.dataset.name
         const tuid = e.currentTarget.dataset.uid;
         if (isWeiXin()) {
             const code = voteFree && await voteFree({
@@ -36,9 +37,8 @@ const VoteList = (props: IProps) => {
                 uid: window.localStorage["sfzvoteuid"],
                 tuid: tuid
             });
-            alert("code:" + code);
             if (code == '0') {
-                var c = `感谢您对${e.currentTarget.dataset.name}的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。`
+                var c = `感谢您对${name}的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。`;
                 props.history.push({
                     pathname: '/votingDialog',
                     state: {

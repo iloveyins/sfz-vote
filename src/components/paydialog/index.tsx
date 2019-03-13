@@ -3,19 +3,22 @@ import React, { Component } from 'react';
 import { Flex, Radio } from 'antd-mobile';
 import './index.scss';
 import { inject, observer, propTypes } from 'mobx-react';
+import { RouteComponentProps } from 'react-router';
 
-interface IProps {
+interface IProps extends RouteComponentProps {
     price: number,
     payCount: number,
     weChatExternalPay?(obj: {}): string,
-    weChatPay?(obj: {}): string
+    weChatPay?(obj: {}): string,
+    aliExternalPay?(obj: {}): string,
 }
 
 @inject(({ pay, status }) => ({
     loading: status.loading,
     setLoading: status.setLoading,
     weChatExternalPay: pay.weChatExternalPay,
-    weChatPay: pay.weChatPay
+    weChatPay: pay.weChatPay,
+    aliExternalPay: pay.aliExternalPay
 }))
 
 @observer
@@ -40,10 +43,7 @@ export default class Paydialog extends React.Component<IProps>{
 
     //微信
     onWeChatExternalPay = async () => {
-
-
         if (!this.isWeiXin()) {
-
             var tid = window.localStorage.getItem('tid') ?
                 String(window.localStorage.getItem('tid')) : "";
 
@@ -53,9 +53,10 @@ export default class Paydialog extends React.Component<IProps>{
                     voteNum: this.props.payCount,
                     tuid: window.localStorage.getItem('tuid')
                 });
+
             s && (window.location.href = s);
         } else {
-            this.props.weChatPay && await this.props.weChatPay({
+            const r = this.props.weChatPay && await this.props.weChatPay({
                 tid: window.localStorage.getItem('tid'),
                 uid: window.localStorage.getItem('sfzvoteuid'),
                 tuid: "",
@@ -63,23 +64,38 @@ export default class Paydialog extends React.Component<IProps>{
                 orderType: this.state.value,
                 voteNum: this.props.payCount
             });
-            // r && (window.location.href = r);
+            r == '0' &&
+                this.props.history.push({
+                    pathname: '/votingDialog',
+                    state: {
+                        content: '',
+                        title: "购买成功",
+                        success: true
+                    }
+                })
         }
     }
 
     //支付宝
     onWeAlipExternalPay = async () => {
         if (!this.isWeiXin()) {
-            //@ts-ignore
-            window.location.href = 'https://excashier.alipay.com/standard/auth.htm?payOrderId=34654654'
+            var url = this.props.aliExternalPay && await this.props.aliExternalPay({
+                tid: window.localStorage.getItem('tid'),
+                voteNum: this.props.payCount,
+                tuid: window.localStorage.getItem('tuid')
+            });
+            url && (window.location.href = url);
         } else {
-            alert("请在浏览器打开，进行支付！")
+            alert("请在浏览器中打开，进行支付！")
         }
     }
 
     render() {
         return (
-            <div className="pay-dialog">
+            <div className="pay-dialog" onClick={(e) => {
+                e.stopPropagation();
+                // this.props.history.push('/Apply');
+            }}>
                 <div className="pay-detial">
                     <p>支付方式</p>
                     <div className="wechat-pay">
@@ -104,7 +120,8 @@ export default class Paydialog extends React.Component<IProps>{
                         </Radio>
                     </div>
 
-                    <p onClick={() => {
+                    <p onClick={(e) => {
+                        e.stopPropagation();
                         this.state.value === 1 ? this.onWeChatExternalPay() : this.onWeAlipExternalPay()
                     }}>
                         确定支付￥

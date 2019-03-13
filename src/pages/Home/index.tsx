@@ -41,7 +41,6 @@ interface IState {
 class Home extends React.Component<IProps, IState>{
     constructor(props: IProps, context: IState) {
         super(props, context);
-
     }
 
     async getList(obj: { pageSize: number, pageNumber: number, tid: string }) {
@@ -73,7 +72,7 @@ class Home extends React.Component<IProps, IState>{
             t = String(window.localStorage.getItem("tid"));
         }
         this.getList({
-            pageSize: 10, pageNumber: 2, tid: t
+            pageSize: 10, pageNumber: 1, tid: t
         });
 
         if (this.isWeiXin()) {
@@ -105,6 +104,11 @@ class Home extends React.Component<IProps, IState>{
             if (appid == undefined || appid == null || appid == ""
                 && uid == undefined || uid == null || uid == "") {
                 window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&oauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+            }
+        }
+        else {
+            if (appid == undefined || appid == null || appid == ""
+                && uid == undefined || uid == null || uid == "") {
                 this.props.officLogin({ code });
             }
         }

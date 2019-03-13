@@ -8,13 +8,15 @@ import Team from './components/Team/index';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
 import { string } from 'prop-types';
+import home from '../../store/home';
 
 interface IProps extends RouteComponentProps {
     postSignUp(obj: FormData): void,
     weChatPay(obj: object): object,
     loading: Boolean,
     setLoading(val: Boolean): void,
-    WCPayPramas: {}
+    WCPayPramas: {},
+    itemData: { activityRule: string, entryCharge: number }
 }
 
 interface IState {
@@ -32,15 +34,17 @@ interface IState {
         declaration: string,
         ageRegion: string
     },
-    tuid: string
+    tuid: string,
+
 }
 
-@inject(({ signUp, status, pay }) => ({
+@inject(({ home, signUp, status, pay }) => ({
     postSignUp: signUp.postSignUp,
     loading: status.loading,
     setLoading: status.setLoading,
     weChatPay: pay.weChatPay,
-    WCPayPramas: pay.WCPayPramas
+    WCPayPramas: pay.WCPayPramas,
+    itemData: home.itemData
 }))
 
 @observer
@@ -116,7 +120,7 @@ class SignUp extends React.Component<IProps, IState>{
             tuid: "",
             openId: window.localStorage.getItem('sfzvoteappId'),
             orderType: "1",
-            voteNum: "10"
+            voteNum: this.props.itemData.entryCharge
         });
     }
 
@@ -160,12 +164,9 @@ class SignUp extends React.Component<IProps, IState>{
                     ageRegion: string
                 }
             }) => {
-
                 this.setState({ isError: obj.errorStatus });
-
                 //验证通过
                 if (obj.errorStatus) {
-                    console.log(obj.fromData)
                     this.setState({
                         fromData: {
                             name: obj.fromData.name,
@@ -203,14 +204,12 @@ class SignUp extends React.Component<IProps, IState>{
                         this.state.isTeam === 2 ? <Team  {...status} /> : <Personal {...status} />
                     }
                     <div className="activity-price">
-                        活动费用：600元
+                        活动费用：{this.props.itemData.entryCharge}元
                     </div>
                     <div className="explanation">
                         <div className="explanation-text">费用说明</div>
                         <p>
-                            1、费用包含大赛报名费、团队组织费和保险等团队活动费用<br /><br />
-                            2、费用包含大赛报名费、团队组织费和保险等团队活动费用<br /><br />
-                            3、费用包含大赛报名费、团队组织费和保险等团队活动费用<br />
+                            {this.props.itemData.activityRule}
                         </p>
                     </div>
                     <button

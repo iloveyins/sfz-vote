@@ -37,18 +37,19 @@ class Apply extends React.Component<IProps, IState> {
         return (
             <div id="apply">
                 {
+                    //@ts-ignore
                     this.state.isAlert ? <Paydialog {...pay} /> : ""
                 }
                 <div className="apply-wrap">
                     <div className="apply-money">
                         <div className="money-count">
                             <div className="money-quota">
-                                <p>10次投票机会</p>
+                                <p>加油</p>
                                 <p>10元</p>
                             </div>
                             <div className="money-content">
                                 <div className="money-text">
-                                    <p>内容：每人每天投票10次</p>
+                                    <p>内容：10元10加油</p>
                                     <p>金额：10元</p>
                                 </div>
                                 <p className="pay-button"
@@ -65,12 +66,12 @@ class Apply extends React.Component<IProps, IState> {
                     <div className="apply-money">
                         <div className="money-count">
                             <div className="money-quota">
-                                <p>55次投票机会</p>
+                                <p>给力</p>
                                 <p>50元</p>
                             </div>
                             <div className="money-content">
                                 <div className="money-text">
-                                    <p>内容：每人每天投票55次</p>
+                                    <p>内容：50元55给力</p>
                                     <p>金额：50元</p>
                                 </div>
                                 <p className="pay-button" onClick={() => {
@@ -86,19 +87,19 @@ class Apply extends React.Component<IProps, IState> {
                     <div className="apply-money">
                         <div className="money-count">
                             <div className="money-quota">
-                                <p>120次投票机会</p>
+                                <p>人气</p>
                                 <p>100元</p>
                             </div>
                             <div className="money-content">
                                 <div className="money-text">
-                                    <p>内容：每人每天投票120次</p>
+                                    <p>内容：100元120人气</p>
                                     <p>金额：100元</p>
                                 </div>
                                 <p className="pay-button" onClick={() => {
                                     this.setState({
                                         isAlert: true,
-                                        price: 120,
-                                        payCount: 100
+                                        price: 100,
+                                        payCount: 120
                                     });
                                 }}>在线支付</p>
                             </div>
@@ -106,7 +107,7 @@ class Apply extends React.Component<IProps, IState> {
                     </div>
                     <div className="introduct">
                         <p>说明</p>
-                        <p>1、投票次数有效期，自购买日起至活动结束为止</p>
+                        <p>1、给力值次数有效期，自购买日起至活动结束为止</p>
                         <p>2、每用户只可选购一种</p>
                     </div>
                 </div>

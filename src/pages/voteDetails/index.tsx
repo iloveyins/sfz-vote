@@ -76,14 +76,16 @@ class VoteDetails extends Component<IProps, IState> {
     render() {
         let self = this;
         const voteClick = async (e: React.MouseEvent<HTMLAnchorElement & { dataset: { uid: string } }>) => {
+
             e.stopPropagation();
+            const tuid = e.currentTarget.dataset.uid;
             if (isWeiXin()) {
                 const code = this.props.voteFree && await this.props.voteFree({
                     tid: window.localStorage["tid"],
                     uid: window.localStorage["sfzvoteuid"],
-                    tuid: e.currentTarget.dataset.uid
+                    tuid: tuid
                 });
-                if (code === '0') {
+                if (code == '0') {
                     var c = `感谢您对${this.props.itemDetails.name}的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。`
                     this.props.history.push({
                         pathname: '/votingDialog',
@@ -109,6 +111,7 @@ class VoteDetails extends Component<IProps, IState> {
                 const code = this.props.voteCheck && await this.props.voteCheck({ tid: window.localStorage.getItem("tid") });
                 if (code == '0') {
                     this.props.history.push('Apply');
+                    window.localStorage.setItem('tuid', tuid);
                 }
             }
         };
@@ -159,8 +162,10 @@ class VoteDetails extends Component<IProps, IState> {
                     </section>
                     <p className="dashed-style"></p>
                     <section className="detial-footer">
-                        <span onClick={voteClick}>为TA投票</span>
-                        <span></span>
+                        <span onClick={voteClick} data-uid={itemDetails.uid}>为TA投票</span>
+                        <span onClick={() => {
+                            this.props.history.push('/')
+                        }}>关闭</span>
                     </section>
                     <section className="bottom-empty"></section>
                 </div>
