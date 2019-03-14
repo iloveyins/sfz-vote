@@ -78,7 +78,6 @@ class Pay {
         runInAction(() => {
             console.log(data);
         });
-        alert(data);
         return data;
     }
 }

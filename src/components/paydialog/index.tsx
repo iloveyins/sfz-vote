@@ -11,6 +11,7 @@ interface IProps extends RouteComponentProps {
     weChatExternalPay?(obj: {}): string,
     weChatPay?(obj: {}): string,
     aliExternalPay?(obj: {}): string,
+    isClosePay?(): void
 }
 
 @inject(({ pay, status }) => ({
@@ -25,7 +26,8 @@ interface IProps extends RouteComponentProps {
 export default class Paydialog extends React.Component<IProps>{
 
     state = {
-        value: 1
+        value: 1,
+        html: ""
     }
     constructor(props: IProps) {
         super(props);
@@ -84,7 +86,10 @@ export default class Paydialog extends React.Component<IProps>{
                 voteNum: this.props.payCount,
                 tuid: window.localStorage.getItem('tuid')
             });
-            url && (window.location.href = url);
+            // url && (window.location.href = url);
+            this.setState({
+                html: url
+            })
         } else {
             alert("请在浏览器中打开，进行支付！")
         }
@@ -93,10 +98,14 @@ export default class Paydialog extends React.Component<IProps>{
     render() {
         return (
             <div className="pay-dialog" onClick={(e) => {
+                this.props.isClosePay && this.props.isClosePay();
                 e.stopPropagation();
-                // this.props.history.push('/Apply');
             }}>
-                <div className="pay-detial">
+                <div dangerouslySetInnerHTML={{ __html: this.state.html }}></div>
+
+                <div className="pay-detial" onClick={(e) => {
+                    e.stopPropagation();
+                }}>
                     <p>支付方式</p>
                     <div className="wechat-pay">
                         <div>
@@ -114,15 +123,15 @@ export default class Paydialog extends React.Component<IProps>{
                             <img src={require("../../static/images/zhifubao.png")} />
                             <span>支付宝支付</span>
                         </div>
-                        <Radio className="my-radio" key={2} checked={this.state.value === 2} onChange={() => {
+                        <Radio className="my-radio" key={2} checked={this.state.value === 2} onChange={(e) => {
                             this.setState({ value: 2 });
                         }}>
                         </Radio>
                     </div>
 
                     <p onClick={(e) => {
-                        e.stopPropagation();
                         this.state.value === 1 ? this.onWeChatExternalPay() : this.onWeAlipExternalPay()
+                        e.stopPropagation();
                     }}>
                         确定支付￥
                         <span>{this.props.price}</span>

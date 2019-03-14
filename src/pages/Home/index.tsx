@@ -8,6 +8,7 @@ import { inject, observer } from 'mobx-react';
 import { Home as HomeStore } from '../../store/home';
 import { Loading } from '../../components/index'
 
+
 interface IProps extends RouteComponentProps {
     getList(obj: { pageSize: number, pageNumber: number, tid: string }): void,
     pagesCount: number,
@@ -122,6 +123,7 @@ class Home extends React.Component<IProps, IState>{
             onWithRouter: (obj: { tid: string, uid: string }) => {
                 //跳转详情页
                 this.props.history.push(`details/?uid=${obj.uid}&tid=${obj.tid}`);
+                window.localStorage.setItem('tid', obj.tid);
             },
             isVote: false
         }
@@ -133,17 +135,26 @@ class Home extends React.Component<IProps, IState>{
                 // setTimeout(() => {
                 //     this.props.setLoading(false);
                 // }, 2000);
-                this.getList({ pageSize: obj.pageCount, pageNumber: obj.pageCurr, tid: String(window.localStorage.getItem("tid")) });
+                this.getList({
+                    pageSize: obj.pageCount,
+                    pageNumber: obj.pageCurr,
+                    tid: String(window.localStorage.getItem("tid"))
+                });
             }
         }
-
+        const votingdialog = {
+            img: "",
+            title: "",
+            shareImg: "",
+            content: "",
+        }
         return (
             <div id="home">
                 <div className="me-vote">
                     <img src={itemData.picUrl} />
                     <a onClick={() => {
                         this.props.history.push('signUp');
-                    }}>我要报名</a>
+                    }}><img src={require('../../static/images/button@3x.png')} /> <span className="sign-text">我要报名</span> </a>
                 </div>
                 <div className="list">
                     <VoteList {...data} />

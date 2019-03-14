@@ -5,7 +5,8 @@ import Paydialog from '../Apply/index';
 import { wxInit } from '../../utils/wxShare'
 import { observer, inject } from 'mobx-react'
 import { RouteComponentProps, withRouter } from 'react-router';
-import { async } from 'q';
+
+import Dialog from '../../components/dialog/index'
 
 export interface IProps extends RouteComponentProps {
     detial: object,
@@ -35,10 +36,21 @@ export interface IProps extends RouteComponentProps {
     entryInfo(obj: object): void,
     voteFree?(obj: object): string,
     voteCheck?(obj: object): string,
+    isDialog?: boolean,
+    updateDialog?(b: boolean): void,
+    onBayCount?(): void
 }
 
 export interface IState {
-    isAlert: boolean
+    isAlert: boolean,
+    dialogData: {
+        img: string,
+        title: string,
+        shareImg: boolean,
+        content: string,
+        success: boolean,
+        onBayCount?(): void
+    }
 }
 const isWeiXin = () => {
     var ua = window.navigator.userAgent.toLowerCase();
@@ -55,7 +67,17 @@ class VoteDetails extends Component<IProps, IState> {
     constructor(props: IProps, context: IState) {
         super(props, context);
         this.state = {
-            isAlert: false
+            isAlert: false,
+            dialogData: {
+                img: "",
+                title: "",
+                shareImg: false,
+                content: "",
+                success: false,
+                onBayCount: () => {
+                    this.props.history.push('apply');
+                }
+            }
         }
     }
 
@@ -76,8 +98,8 @@ class VoteDetails extends Component<IProps, IState> {
     render() {
         let self = this;
         const voteClick = async (e: React.MouseEvent<HTMLAnchorElement & { dataset: { uid: string } }>) => {
-
             e.stopPropagation();
+
             const tuid = e.currentTarget.dataset.uid;
             if (isWeiXin()) {
                 const code = this.props.voteFree && await this.props.voteFree({
@@ -87,26 +109,47 @@ class VoteDetails extends Component<IProps, IState> {
                 });
                 if (code == '0') {
                     var c = `感谢您对${this.props.itemDetails.name}的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。`
-                    this.props.history.push({
-                        pathname: '/votingDialog',
-                        state: {
-                            content: c,
+                    // this.props.history.push({
+                    //     pathname: '/votingDialog',
+                    //     state: {
+                    //         content: c,
+                    //         title: "投票成功",
+                    //         success: true,
+                    //         shareImg: true
+                    //     }
+                    // })
+                    this.setState({
+                        isAlert: true,
+                        dialogData: {
+                            img: "",
                             title: "投票成功",
-                            success: true,
-                            shareImg: true
+                            shareImg: false,
+                            content: c,
+                            success: true
                         }
                     })
                 } else {
                     var c = "您的可投票次数已经达到上限"
-                    this.props.history.push({
-                        pathname: '/votingDialog',
-                        state: {
-                            content: c,
+                    // this.props.history.push({
+                    //     pathname: '/votingDialog',
+                    //     state: {
+                    //         content: c,
+                    //         title: "非常抱歉",
+                    //         success: false
+                    //     }
+                    // })
+                    this.setState({
+                        isAlert: true,
+                        dialogData: {
+                            img: "",
                             title: "非常抱歉",
+                            shareImg: false,
+                            content: c,
                             success: false
                         }
                     })
                 }
+                this.props.updateDialog && this.props.updateDialog(true);
             } else {
                 const code = this.props.voteCheck && await this.props.voteCheck({ tid: window.localStorage.getItem("tid") });
                 if (code == '0') {
@@ -118,6 +161,7 @@ class VoteDetails extends Component<IProps, IState> {
         const { itemDetails } = this.props;
         return (
             <div className="knowledge-details">
+                {this.props.isDialog ? <Dialog {...this.state.dialogData} /> : ""}
                 <div className="detail-background">
                     <section className="detial-top">
                         <div className="img-wrap">
@@ -174,9 +218,11 @@ class VoteDetails extends Component<IProps, IState> {
     }
 }
 
-export default inject(({ signUp, home }) => ({
+export default inject(({ signUp, home, dialog }) => ({
     voteCheck: signUp.voteCheck,
     voteFree: signUp.voteFree,
     itemDetails: home.itemDetails,
-    entryInfo: home.entryInfo
+    entryInfo: home.entryInfo,
+    isDialog: dialog.isDialog,
+    updateDialog: dialog.updateDialog
 }))(observer(withRouter(VoteDetails)));

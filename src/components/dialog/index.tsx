@@ -2,12 +2,18 @@
 import React, { Component } from 'react';
 import './index.scss';
 import { RouteComponentProps } from 'react-router';
+import { inject, observer } from 'mobx-react';
 import { Modal } from 'antd-mobile';
-interface IProps extends RouteComponentProps {
+
+interface IProps {
     img: string,
     title: string,
-    shareImg: string,
+    shareImg: boolean,
     content: string,
+    success: boolean,
+    onCloseClick?(): void,
+    updateDialog?(b: boolean): void,
+    onBayCount?(): void
 }
 function closest(el, selector) {
     const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
@@ -19,20 +25,23 @@ function closest(el, selector) {
     }
     return null;
 }
-export default class VotingDialog extends React.Component<IProps> {
+class Dialog extends React.Component<IProps> {
     constructor(props: IProps) {
         super(props);
         this.state.modal1 = true;
+
     }
     componentDidMount() {
 
     }
+
     state = {
         modal1: false,
         modal2: false,
     };
+
     onBugCount = () => {
-        this.props.history.push('Apply');
+        //this.props.history.push('Apply');
     }
     onClose = key => () => {
         this.setState({
@@ -50,7 +59,7 @@ export default class VotingDialog extends React.Component<IProps> {
         }
     }
     render() {
-        const { location: { state: { title, content, shareImg, success } } } = this.props;
+        const { success, title, content, shareImg } = this.props;
         return (
             <Modal
                 visible={this.state.modal1}
@@ -66,8 +75,10 @@ export default class VotingDialog extends React.Component<IProps> {
                     <div className="dialog-wrap">
                         <div className="voting-detial">
                             <div className="voting-wrap">
-                                {success ? <img className="first-img" src={require('../../static/images/success@3x.png')} />
-                                    : <img className="first-img" src={require('../../static/images/failure@3x.png')} />}
+                                {
+                                    success ? <img className="first-img" src={require('../../static/images/success@3x.png')} />
+                                        : <img className="first-img" src={require('../../static/images/failure@3x.png')} />
+                                }
 
                                 <p className="voting-title">{title}</p>
                                 <p className="voting-content">{content}</p>
@@ -78,11 +89,13 @@ export default class VotingDialog extends React.Component<IProps> {
                                         </div> : ""
                                 }
                                 <div className="detial-footer">
-                                    <span onClick={this.onBugCount}>购买给力值</span>
-                                    <span onClick={
-                                        () => {
-                                            this.props.history.push('/');
-                                        }}>返回</span>
+                                    <span onClick={() => {
+                                        this.props.onBayCount && this.props.onBayCount()
+                                    }}>购买给力值</span>
+                                    <span onClick={() => {
+                                        this.props.updateDialog && this.props.updateDialog(false);
+                                    }}>
+                                        关闭</span>
                                 </div>
                             </div>
                         </div>
@@ -92,3 +105,7 @@ export default class VotingDialog extends React.Component<IProps> {
         )
     }
 }
+
+export default inject(({ dialog }) => ({
+    updateDialog: dialog.updateDialog
+}))(observer(Dialog));

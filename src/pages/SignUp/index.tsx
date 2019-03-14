@@ -184,10 +184,9 @@ class SignUp extends React.Component<IProps, IState>{
             sendCaptcha: () => { }
         }
 
-
         return (
             <div className="sign-up">
-                <img className="sign-up-img" src={require("../../static/images/banner.png")} />
+                <img className="sign-up-img" src={require("../../static/images/banner.jpg")} />
                 <div className="sign-up-content">
                     <div className="types-entries">
                         <div className="text types-item">参赛类型：</div>

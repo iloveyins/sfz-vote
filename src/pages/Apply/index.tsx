@@ -15,6 +15,7 @@ export interface IState {
     isAlert: boolean,
     price: number,
     payCount: number
+    isClosePay?(): void
 }
 
 class Apply extends React.Component<IProps, IState> {
@@ -24,14 +25,18 @@ class Apply extends React.Component<IProps, IState> {
         this.state = {
             isAlert: false,
             price: 0,
-            payCount: 0
+            payCount: 0,
+            isClosePay: () => {
+                this.setState({ isAlert: false })
+            }
         }
     }
 
     render() {
         let pay = {
             price: this.state.price,
-            payCount: this.state.payCount
+            payCount: this.state.payCount,
+            isClosePay: this.state.isClosePay
         }
 
         return (
