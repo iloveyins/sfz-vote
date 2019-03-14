@@ -75,7 +75,7 @@ class VoteDetails extends Component<IProps, IState> {
                 content: "",
                 success: false,
                 onBayCount: () => {
-                    this.props.history.push('apply');
+                    this.props.history.push({ pathname: '/ssss' })
                 }
             }
         }
@@ -99,7 +99,20 @@ class VoteDetails extends Component<IProps, IState> {
         let self = this;
         const voteClick = async (e: React.MouseEvent<HTMLAnchorElement & { dataset: { uid: string } }>) => {
             e.stopPropagation();
-
+            // this.setState({
+            //     isAlert: true,
+            //     dialogData: {
+            //         img: "",
+            //         title: "投票成功",
+            //         shareImg: false,
+            //         content: "sdf",
+            //         success: true,
+            //         onBayCount: () => {
+            //             this.props.history.push({ pathname: '/Apply' })
+            //         }
+            //     }
+            // })
+            // this.props.updateDialog && this.props.updateDialog(true);
             const tuid = e.currentTarget.dataset.uid;
             if (isWeiXin()) {
                 const code = this.props.voteFree && await this.props.voteFree({
@@ -153,7 +166,7 @@ class VoteDetails extends Component<IProps, IState> {
             } else {
                 const code = this.props.voteCheck && await this.props.voteCheck({ tid: window.localStorage.getItem("tid") });
                 if (code == '0') {
-                    this.props.history.push('Apply');
+                    this.props.history.push('/Apply');
                     window.localStorage.setItem('tuid', tuid);
                 }
             }

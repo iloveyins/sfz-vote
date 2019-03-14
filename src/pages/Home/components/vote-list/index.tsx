@@ -50,7 +50,7 @@ class VoteList extends React.Component<IProps, IState> {
                 success: false,
                 onBayCount: () => {
                     alert('OK');
-                    this.props.history.push('apply');
+                    this.props.history.push('/Apply');
                 }
             }
         }
