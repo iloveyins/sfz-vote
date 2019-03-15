@@ -5,18 +5,15 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 100;
-  // background: rgba(0, 0, 0, 0.8);
+  z-index: 100; // background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   .dialog-wrap {
-    width: px2rem(598px);
-    // height: px2rem(898px);
+    width: px2rem(598px); // height: px2rem(898px);
     background: #ffcf5f;
     .voting-detial {
-      width: px2rem(570px);
-      // height: px2rem(870px);
+      width: px2rem(570px); // height: px2rem(870px);
       margin: px2rem(14px);
       overflow: hidden;
       background: rgba(255, 255, 255, 1);
@@ -59,7 +56,7 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          span:first-child {
+          .buyGl {
             width: px2rem(316px);
             height: px2rem(69px);
             line-height: px2rem(69px);
@@ -67,6 +64,7 @@
             text-align: center;
             background: #fd7327;
             color: #fff;
+            display: block;
             font-size: px2rem(32px);
           }
           span:last-child {

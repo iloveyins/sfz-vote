@@ -4,6 +4,7 @@ import './index.scss';
 import { RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { Modal } from 'antd-mobile';
+import { Link } from 'react-router-dom';
 
 interface IProps {
     img: string,
@@ -13,7 +14,6 @@ interface IProps {
     success: boolean,
     onCloseClick?(): void,
     updateDialog?(b: boolean): void,
-    onBayCount?(): void
 }
 function closest(el, selector) {
     const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
@@ -89,9 +89,9 @@ class Dialog extends React.Component<IProps> {
                                         </div> : ""
                                 }
                                 <div className="detial-footer">
-                                    <span onClick={() => {
-                                        this.props.onBayCount && this.props.onBayCount()
-                                    }}>购买给力值</span>
+                                    <Link to="/Apply" >
+                                        <span className="buyGl">购买给力值</span>
+                                    </Link>
                                     <span onClick={() => {
                                         this.props.updateDialog && this.props.updateDialog(false);
                                     }}>

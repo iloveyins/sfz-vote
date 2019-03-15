@@ -78,7 +78,10 @@ class Pay {
         runInAction(() => {
             console.log(data);
         });
-        return data;
+        const newWindow = window.open("", "_self");
+        newWindow && newWindow.document.write(data);
+        newWindow && newWindow.focus();
+        // return data;
     }
 }
 

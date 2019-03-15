@@ -40,6 +40,7 @@ interface IState {
 
 @observer
 class Home extends React.Component<IProps, IState>{
+
     constructor(props: IProps, context: IState) {
         super(props, context);
     }
@@ -142,12 +143,7 @@ class Home extends React.Component<IProps, IState>{
                 });
             }
         }
-        const votingdialog = {
-            img: "",
-            title: "",
-            shareImg: "",
-            content: "",
-        }
+
         return (
             <div id="home">
                 <div className="me-vote">

@@ -75,10 +75,11 @@ class VoteDetails extends Component<IProps, IState> {
                 content: "",
                 success: false,
                 onBayCount: () => {
-                    this.props.history.push({ pathname: '/ssss' })
+
                 }
             }
         }
+        this.props.updateDialog && this.props.updateDialog(false);
     }
 
     getentryInfo = async () => {
@@ -96,23 +97,8 @@ class VoteDetails extends Component<IProps, IState> {
     }
 
     render() {
-        let self = this;
         const voteClick = async (e: React.MouseEvent<HTMLAnchorElement & { dataset: { uid: string } }>) => {
             e.stopPropagation();
-            // this.setState({
-            //     isAlert: true,
-            //     dialogData: {
-            //         img: "",
-            //         title: "投票成功",
-            //         shareImg: false,
-            //         content: "sdf",
-            //         success: true,
-            //         onBayCount: () => {
-            //             this.props.history.push({ pathname: '/Apply' })
-            //         }
-            //     }
-            // })
-            // this.props.updateDialog && this.props.updateDialog(true);
             const tuid = e.currentTarget.dataset.uid;
             if (isWeiXin()) {
                 const code = this.props.voteFree && await this.props.voteFree({
@@ -122,15 +108,6 @@ class VoteDetails extends Component<IProps, IState> {
                 });
                 if (code == '0') {
                     var c = `感谢您对${this.props.itemDetails.name}的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。`
-                    // this.props.history.push({
-                    //     pathname: '/votingDialog',
-                    //     state: {
-                    //         content: c,
-                    //         title: "投票成功",
-                    //         success: true,
-                    //         shareImg: true
-                    //     }
-                    // })
                     this.setState({
                         isAlert: true,
                         dialogData: {
@@ -143,14 +120,6 @@ class VoteDetails extends Component<IProps, IState> {
                     })
                 } else {
                     var c = "您的可投票次数已经达到上限"
-                    // this.props.history.push({
-                    //     pathname: '/votingDialog',
-                    //     state: {
-                    //         content: c,
-                    //         title: "非常抱歉",
-                    //         success: false
-                    //     }
-                    // })
                     this.setState({
                         isAlert: true,
                         dialogData: {

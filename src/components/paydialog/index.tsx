@@ -80,19 +80,19 @@ export default class Paydialog extends React.Component<IProps>{
 
     //支付宝
     onWeAlipExternalPay = async () => {
-        if (!this.isWeiXin()) {
-            var url = this.props.aliExternalPay && await this.props.aliExternalPay({
-                tid: window.localStorage.getItem('tid'),
-                voteNum: this.props.payCount,
-                tuid: window.localStorage.getItem('tuid')
-            });
-            // url && (window.location.href = url);
-            this.setState({
-                html: url
-            })
-        } else {
-            alert("请在浏览器中打开，进行支付！")
-        }
+        // if (!this.isWeiXin()) {
+        var url = this.props.aliExternalPay && await this.props.aliExternalPay({
+            tid: window.localStorage.getItem('tid'),
+            voteNum: this.props.payCount,
+            tuid: window.localStorage.getItem('tuid')
+        });
+        // url && (window.location.href = url);
+        // this.setState({
+        //     html: url
+        // })
+        // } else {
+        //     alert("请在浏览器中打开，进行支付！")
+        // }
     }
 
     render() {
@@ -101,7 +101,6 @@ export default class Paydialog extends React.Component<IProps>{
                 this.props.isClosePay && this.props.isClosePay();
                 e.stopPropagation();
             }}>
-                <div dangerouslySetInnerHTML={{ __html: this.state.html }}></div>
 
                 <div className="pay-detial" onClick={(e) => {
                     e.stopPropagation();

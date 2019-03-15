@@ -36,7 +36,6 @@ const isWeiXin = () => {
     }
 }
 
-
 class VoteList extends React.Component<IProps, IState> {
     constructor(props: IProps, content: IState) {
         super(props, content);
@@ -47,11 +46,7 @@ class VoteList extends React.Component<IProps, IState> {
                 title: "",
                 shareImg: false,
                 content: "",
-                success: false,
-                onBayCount: () => {
-                    alert('OK');
-                    this.props.history.push('/Apply');
-                }
+                success: false
             }
         }
         this.props.updateDialog && this.props.updateDialog(false);
@@ -59,6 +54,7 @@ class VoteList extends React.Component<IProps, IState> {
 
     voteClick = async (e: React.MouseEvent<HTMLAnchorElement & { dataset: { uid: string } }>) => {
         e.stopPropagation();
+        const self = this;
         var name = e.currentTarget.dataset.name
         const tuid = e.currentTarget.dataset.uid;
         if (isWeiXin()) {
@@ -67,10 +63,9 @@ class VoteList extends React.Component<IProps, IState> {
                 uid: window.localStorage["sfzvoteuid"],
                 tuid: tuid
             });
-
             if (code == '0') {
                 var c = `感谢您对${name}的支持，扫码下载十方舟短视频知识APP，学习更多的儿童课外辅导以及兴趣培养知识，您还有机会获得价值99元的VIP会员优惠券一张。`;
-                this.setState({
+                self.setState({
                     isAlert: true,
                     dialogData: {
                         img: "",
@@ -82,7 +77,7 @@ class VoteList extends React.Component<IProps, IState> {
                 })
             } else {
                 var c = "您的可投票次数已经达到上限";
-                this.setState({
+                self.setState({
                     isAlert: true,
                     dialogData: {
                         img: "",
@@ -116,7 +111,6 @@ class VoteList extends React.Component<IProps, IState> {
         }
         return (
             <div>
-
                 {this.props.isDialog ? <Dialog {...dialogData} /> : ""}
                 {
                     data.map((item) => (
