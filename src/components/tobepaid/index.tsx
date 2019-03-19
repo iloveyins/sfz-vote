@@ -1,10 +1,8 @@
 
 import React, { Component } from 'react';
 import './index.scss';
-import { RouteComponentProps } from 'react-router';
 import { inject, observer } from 'mobx-react';
 import { Modal } from 'antd-mobile';
-import { Link } from 'react-router-dom';
 
 interface IProps {
     img: string,
@@ -13,6 +11,7 @@ interface IProps {
     content: string,
     success: boolean,
     voteNum: number,
+    onTobepaidClose?(): void,
     onCloseClick?(): void,
     updateTobepaid?(b: boolean): void,
     weChatPay?(obj: object): string,
@@ -80,6 +79,7 @@ class Tobepaid extends React.Component<IProps> {
     }
 
     onBridgeReady = async () => {
+        this.props.updateTobepaid && this.props.updateTobepaid(false);
         const r = this.props.weChatPay && await this.props.weChatPay({
             tid: window.localStorage.getItem("tid"),
             uid: window.localStorage.getItem('sfzvoteuid'),
@@ -88,29 +88,33 @@ class Tobepaid extends React.Component<IProps> {
             orderType: "1",
             voteNum: this.props.voteNum
         });
+        this.props.updateDialog && this.props.updateDialog(false);
+        alert(r);
         if (r == '0') {
-            this.setState({
-                dialogData: {
-                    img: "",
-                    title: "恭喜您！报名成功",
-                    shareImg: false,
-                    content: "1-2个工作日审核通过后，会在投票页显示，并发送短信提示哦~",
-                    success: true
-                }
-            })
-            this.props.updateDialog && this.props.updateDialog(true);
+            alert('恭喜您！报名成功')
+            // this.setState({
+            // dialogData: {
+            //     img: "",
+            //     title: "恭喜您！报名成功",
+            //     shareImg: false,
+            //     content: "1-2个工作日审核通过后，会在投票页显示，并发送短信提示哦~",
+            //     success: true
+            // }
+            // })
+            // this.props.updateDialog && this.props.updateDialog(true);
         }
         else {
-            this.setState({
-                dialogData: {
-                    img: "",
-                    title: "报名失败",
-                    shareImg: false,
-                    content: "请支付订单",
-                    success: false
-                }
-            })
-            this.props.updateDialog && this.props.updateDialog(true);
+            // alert('报名失败！')
+            // this.setState({
+            //     dialogData: {
+            //         img: "",
+            //         title: "报名失败",
+            //         shareImg: false,
+            //         content: "请支付订单",
+            //         success: false
+            //     }
+            // })
+            // this.props.updateDialog && this.props.updateDialog(true);
         }
     }
 
@@ -145,7 +149,11 @@ class Tobepaid extends React.Component<IProps> {
                                         </div> : ""
                                 }
                                 <div className="detial-footer">
-                                    <span className="buyGl" onClick={this.onWeixinJSBridge}>去支付</span>
+                                    <span className="buyGl" onClick={() => {
+                                        this.props.updateTobepaid && this.props.updateTobepaid(false);
+                                        // this.onWeixinJSBridge();
+                                        this.props.onTobepaidClose;
+                                    }}>去支付</span>
                                     <span onClick={() => {
                                         this.props.updateTobepaid && this.props.updateTobepaid(false);
                                     }}>

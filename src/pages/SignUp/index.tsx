@@ -53,7 +53,8 @@ interface IState {
         content: string,
         success: boolean,
         voteNum: number,
-        shareImg: boolean
+        shareImg: boolean,
+        onTobepaidClose?(): void
     }
 }
 
@@ -85,6 +86,7 @@ class SignUp extends React.Component<IProps, IState>{
 
     }
 
+
     //提交报名
     onSubmmit = () => {
         // FormData 对象
@@ -109,7 +111,6 @@ class SignUp extends React.Component<IProps, IState>{
 
     async postSign(form) {
         const r = await this.props.postSignUp(form);
-        alert(JSON.stringify(r));
         if (r['msg'] != "成功") {
             this.setState({
                 tobepaiddialogData: {
@@ -118,7 +119,12 @@ class SignUp extends React.Component<IProps, IState>{
                     shareImg: false,
                     content: "支付成功之后，则报名成功！",
                     success: false,
-                    voteNum: this.props.itemData.entryCharge
+                    voteNum: this.props.itemData.entryCharge,
+                    onTobepaidClose: () => {
+                        alert("close")
+                        this.props.updateTobepaid && this.props.updateTobepaid(false);
+                        this.onWeixinJSBridge();
+                    }
                 }
             })
             this.props.updateTobepaid && this.props.updateTobepaid(true);
@@ -213,10 +219,13 @@ class SignUp extends React.Component<IProps, IState>{
                 content: "",
                 success: false,
                 voteNum: 0,
-                shareImg: false
+                shareImg: false,
+                onTobepaidClose: () => { }
             }
         };
+        this.props.updateDialog && this.props.updateDialog(false);
     }
+
 
     render() {
         const teamData = [
