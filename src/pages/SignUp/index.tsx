@@ -7,16 +7,20 @@ import Personal from './components/Personal/index';
 import Team from './components/Team/index';
 import { inject, observer } from 'mobx-react';
 import { RouteComponentProps } from 'react-router';
-import { string } from 'prop-types';
-import home from '../../store/home';
+
+import { Dialog, Tobepaid } from '../../components/index'
 
 interface IProps extends RouteComponentProps {
     postSignUp(obj: FormData): void,
-    weChatPay(obj: object): object,
+    weChatPay(obj: object): string,
     loading: Boolean,
     setLoading(val: Boolean): void,
     WCPayPramas: {},
-    itemData: { activityRule: string, entryCharge: number }
+    itemData: { activityRule: string, entryCharge: number },
+    updateDialog?(b: boolean): void,
+    isDialog?: boolean,
+    isTobepaid?: boolean,
+    updateTobepaid?(b: boolean): void,
 }
 
 interface IState {
@@ -35,29 +39,39 @@ interface IState {
         ageRegion: string
     },
     tuid: string,
-
+    dialogData: {
+        img: string,
+        title: string,
+        shareImg: boolean,
+        content: string,
+        success: boolean,
+        onBayCount?(): void
+    },
+    tobepaiddialogData: {
+        img: string,
+        title: string,
+        content: string,
+        success: boolean,
+        voteNum: number,
+        shareImg: boolean
+    }
 }
 
-@inject(({ home, signUp, status, pay }) => ({
+@inject(({ home, signUp, status, pay, dialog }) => ({
     postSignUp: signUp.postSignUp,
     loading: status.loading,
     setLoading: status.setLoading,
     weChatPay: pay.weChatPay,
     WCPayPramas: pay.WCPayPramas,
-    itemData: home.itemData
+    itemData: home.itemData,
+    updateDialog: dialog.updateDialog,
+    isDialog: dialog.isDialog,
+    isTobepaid: dialog.isTobepaid,
+    updateTobepaid: dialog.updateTobepaid
 }))
 
 @observer
 class SignUp extends React.Component<IProps, IState>{
-
-    private data = {
-        appId: string,
-        timeStamp: string,
-        nonceStr: string,
-        package: string,
-        signType: string,
-        sign: string
-    }
 
     onChange = (isTeam) => {
         this.setState({ isTeam });
@@ -76,7 +90,6 @@ class SignUp extends React.Component<IProps, IState>{
         // FormData 对象
         var form = new FormData();
         form.append("coverFile", this.state.fromData.files[0].file);
-
         form.append('data', JSON.stringify({
             entryInfo: {
                 uid: window.localStorage.getItem('sfzvoteuid'),
@@ -96,6 +109,25 @@ class SignUp extends React.Component<IProps, IState>{
 
     async postSign(form) {
         const r = await this.props.postSignUp(form);
+        alert(JSON.stringify(r));
+        if (r['msg'] != "成功") {
+            this.setState({
+                tobepaiddialogData: {
+                    img: "",
+                    title: "未支付，请及时支付",
+                    shareImg: false,
+                    content: "支付成功之后，则报名成功！",
+                    success: false,
+                    voteNum: this.props.itemData.entryCharge
+                }
+            })
+            this.props.updateTobepaid && this.props.updateTobepaid(true);
+        } else {
+            this.onWeixinJSBridge();
+        }
+    }
+
+    onWeixinJSBridge() {
         //@ts-ignore
         if (typeof window.WeixinJSBridge == "undefined") {
             if (document.addEventListener) {
@@ -110,11 +142,10 @@ class SignUp extends React.Component<IProps, IState>{
         } else {
             this.onBridgeReady();
         }
-
     }
 
     onBridgeReady = async () => {
-        this.props.weChatPay && this.props.weChatPay({
+        const r = this.props.weChatPay && await this.props.weChatPay({
             tid: window.localStorage.getItem("tid"),
             uid: window.localStorage.getItem('sfzvoteuid'),
             tuid: "",
@@ -122,6 +153,30 @@ class SignUp extends React.Component<IProps, IState>{
             orderType: "1",
             voteNum: this.props.itemData.entryCharge
         });
+        if (r == '0') {
+            this.setState({
+                dialogData: {
+                    img: "",
+                    title: "恭喜您！报名成功",
+                    shareImg: false,
+                    content: "1-2个工作日审核通过后，会在投票页显示，并发送短信提示哦~",
+                    success: true
+                }
+            })
+            this.props.updateDialog && this.props.updateDialog(true);
+        }
+        else {
+            this.setState({
+                dialogData: {
+                    img: "",
+                    title: "报名失败",
+                    shareImg: false,
+                    content: "请支付订单",
+                    success: false
+                }
+            })
+            this.props.updateDialog && this.props.updateDialog(true);
+        }
     }
 
     constructor(props: IProps, context: IState) {
@@ -140,7 +195,26 @@ class SignUp extends React.Component<IProps, IState>{
                 captcha: "",
                 ageRegion: ""
             },
-            tuid: ""
+            tuid: "",
+
+            dialogData: {
+                img: "",
+                title: "",
+                shareImg: false,
+                content: "",
+                success: false,
+                onBayCount: () => {
+
+                }
+            },
+            tobepaiddialogData: {
+                img: "",
+                title: "",
+                content: "",
+                success: false,
+                voteNum: 0,
+                shareImg: false
+            }
         };
     }
 
@@ -186,6 +260,8 @@ class SignUp extends React.Component<IProps, IState>{
 
         return (
             <div className="sign-up">
+                {this.props.isDialog ? <Dialog {...this.state.dialogData} /> : ""}
+                {this.props.isTobepaid ? <Tobepaid {...this.state.tobepaiddialogData} /> : ""}
                 <img className="sign-up-img" src={require("../../static/images/banner.jpg")} />
                 <div className="sign-up-content">
                     <div className="types-entries">

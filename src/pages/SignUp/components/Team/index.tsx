@@ -149,6 +149,7 @@ export default class Personal extends React.Component<IProps, IState> {
                     files: this.state.files,
                     ageRegion: this.state.ageBracket[0],
                     declaration: this.state.declaration,
+                    captcha: this.state.code
                 }
             }
         );
@@ -199,7 +200,7 @@ export default class Personal extends React.Component<IProps, IState> {
                 <div className="content-item">
                     <Picker data={seasons} cols={1} className="forss"
                         value={this.state.ageBracket}
-                        onChange={(ageBracket => { alert(ageBracket); this.setState({ ageBracket }) })}
+                        onChange={(ageBracket => { this.setState({ ageBracket }) })}
                     >
                         <List.Item arrow="horizontal">* 年龄范围：</List.Item>
                     </Picker>

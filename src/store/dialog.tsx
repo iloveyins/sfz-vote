@@ -7,11 +7,19 @@ configure({ enforceActions: "observed" })
 
 class Dialog {
     @observable isDialog = false;
+    @observable isTobepaid = false;
 
     @action.bound
     async updateDialog(b: boolean) {
         runInAction(() => {
             this.isDialog = b;
+        });
+    }
+
+    @action.bound
+    async updateTobepaid(b: boolean) {
+        runInAction(() => {
+            this.isTobepaid = b;
         });
     }
 }
