@@ -20,14 +20,20 @@
           width: px2rem(230px);
           background-size: 100% 100%;
           background-image: url("../../static/images/money-bg.png");
+          img:first-child {
+            // margin: 0 px2rem(15px);
+            padding: px2rem(20px) 0 px2rem(5px) 0;
+            width: px2rem(96px);
+            height: px2rem(100px);
+          }
           p:first-child {
-            margin: 0 px2rem(15px);
-            padding: px2rem(50px) 0 px2rem(30px) 0;
-            border-bottom: dashed px2rem(2px) rgba(253, 204, 150, 1);
+            font-size: px2rem(24px);
           }
           p:last-child {
-            font-size: px2rem(40px);
-            margin-top: px2rem(31px);
+            font-size: px2rem(28px);
+            margin: px2rem(10px) px2rem(20px);
+            padding-top: px2rem(10px);
+            border-top: dashed px2rem(2px) rgba(253, 204, 150, 1);
           }
         }
         .money-content {
@@ -35,7 +41,9 @@
           flex-direction: column;
           justify-content: space-between;
           align-items: center;
+          width: px2rem(300px);
           .money-text {
+            font-size: px2rem(28px);
             margin-top: px2rem(25px);
             p:last-child {
               margin-top: px2rem(10px);

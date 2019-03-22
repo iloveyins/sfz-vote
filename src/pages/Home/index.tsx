@@ -16,7 +16,9 @@ interface IProps extends RouteComponentProps {
     itemInfo(tid: string): void,
     itemData: {
         activityNotice: string,
-        picUrl: string
+        picUrl: string,
+        title: string,
+        shareDescrib: string
     },
     entryInfo(obj: object): void,
     setLoading(obj: boolean): void,
@@ -53,6 +55,7 @@ class Home extends React.Component<IProps, IState>{
         }
         );
     }
+
     isWeiXin = () => {
         var ua = window.navigator.userAgent.toLowerCase();
         //通过正则表达式匹配ua中是否含有MicroMessenger字符串
@@ -67,12 +70,14 @@ class Home extends React.Component<IProps, IState>{
         const params = new URLSearchParams(this.props.location.search)
         var ttid = params.get('tid') ? String(params.get('tid')) : "";
         var t = "";
+
         if (ttid) {
             window.localStorage.setItem("tid", ttid);
             t = String(window.localStorage.getItem("tid"));
         } else {
             t = String(window.localStorage.getItem("tid"));
         }
+
         this.getList({
             pageSize: 10, pageNumber: 1, tid: t
         });
@@ -83,6 +88,13 @@ class Home extends React.Component<IProps, IState>{
 
         //获取详情页信息
         this.props.itemInfo(t);
+        setTimeout(() => {
+            wxInit(
+                this.props.itemData.title,
+                window.location.href,
+                this.props.itemData.picUrl,
+                this.props.itemData.shareDescrib);
+        }, 3000)
     }
 
     async itemInfo(tid: string) {
@@ -99,9 +111,17 @@ class Home extends React.Component<IProps, IState>{
     weChatAuthorized() {
         const appId = 'wx615e5ac092e9c376';
         const code = this.getQueryString('code');
-        const redirect_uri = 'https://www.nihaotime.com/voting/';
+        let redirect_uri = 'https://www.10fangzhou.com/voting/';
+
+        // if (process.env.NODE_ENV == 'development') {
+        //     redirect_uri = "https://www.nihaotime.com/voting/";
+        // } else {
+        //     redirect_uri = "https://www.10fangzhou.com/voting/";
+        // }
+
         var appid = window.localStorage.getItem('sfzvoteappId');
         var uid = window.localStorage.getItem('sfzvoteuid');
+
         if (code == null || code == '') {
             if (appid == undefined || appid == null || appid == ""
                 && uid == undefined || uid == null || uid == "") {
@@ -118,7 +138,6 @@ class Home extends React.Component<IProps, IState>{
 
     render() {
         const { itemData, location: { search }, loading } = this.props;
-
         const data = {
             data: [],
             onWithRouter: (obj: { tid: string, uid: string }) => {

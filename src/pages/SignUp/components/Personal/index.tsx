@@ -200,9 +200,12 @@ export default class Personal extends React.Component<IProps, IState> {
                 <div className="content-item">
                     <DatePicker
                         mode="date"
+                        minDate={new Date(1900, 1, 1)}
+                        maxDate={new Date()}
                         title="选择出生年月日"
                         extra="Optional"
                         value={this.state.date}
+                        format="YYYY-MM-DD"
                         onChange={date => this.setState({ date })}
                     >
                         <List.Item arrow="horizontal">* 年 龄：</List.Item>

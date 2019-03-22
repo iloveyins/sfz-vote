@@ -23,24 +23,29 @@ class Pay {
             },
         });
         runInAction(() => {
-            // this.WCPayPramas = data;
+            //@ts-ignore
+            window.WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', {
+                    "appId": data.appId,                 //公众号名称，由商户传入     
+                    "timeStamp": String(data.timeStamp),         //时间戳，自1970年以来的秒数     
+                    "nonceStr": data.nonceStr,           //随机串     
+                    "package": data.package,
+                    "signType": data.signType,                   //微信签名方式：     
+                    "paySign": data.sign              //微信签名 
+                },
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        alert('恭喜您！报名成功');
+                        return "0";
+                    } else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+                        alert('您已取消支付');
+                    }
+                    else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+                        alert('支付失败');
+                    }
+
+                });
         });
-        //@ts-ignore
-        window.WeixinJSBridge.invoke(
-            'getBrandWCPayRequest', {
-                "appId": data.appId,                 //公众号名称，由商户传入     
-                "timeStamp": String(data.timeStamp),         //时间戳，自1970年以来的秒数     
-                "nonceStr": data.nonceStr,           //随机串     
-                "package": data.package,
-                "signType": data.signType,                   //微信签名方式：     
-                "paySign": data.sign              //微信签名 
-            },
-            function (res) {
-                if (res.err_msg == "get_brand_wcpay_request:ok") {
-                    return "0";
-                }
-            });
-        return '1'
     }
 
     @action.bound

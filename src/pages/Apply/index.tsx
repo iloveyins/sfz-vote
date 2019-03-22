@@ -49,12 +49,13 @@ class Apply extends React.Component<IProps, IState> {
                     <div className="apply-money">
                         <div className="money-count">
                             <div className="money-quota">
-                                <p>加油</p>
+                                <img src={require("../../static/images/flower@3.png")} alt="" />
+                                <p>鲜花</p>
                                 <p>10元</p>
                             </div>
                             <div className="money-content">
                                 <div className="money-text">
-                                    <p>内容：10元10加油</p>
+                                    <p>内容：<strong>10</strong> 鲜花</p>
                                     <p>金额：10元</p>
                                 </div>
                                 <p className="pay-button"
@@ -71,12 +72,13 @@ class Apply extends React.Component<IProps, IState> {
                     <div className="apply-money">
                         <div className="money-count">
                             <div className="money-quota">
-                                <p>给力</p>
+                                <img src={require("../../static/images/star@3.png")} alt="" />
+                                <p>幸运星</p>
                                 <p>50元</p>
                             </div>
                             <div className="money-content">
                                 <div className="money-text">
-                                    <p>内容：50元55给力</p>
+                                    <p>内容：<strong>55</strong> 幸运星</p>
                                     <p>金额：50元</p>
                                 </div>
                                 <p className="pay-button" onClick={() => {
@@ -92,12 +94,13 @@ class Apply extends React.Component<IProps, IState> {
                     <div className="apply-money">
                         <div className="money-count">
                             <div className="money-quota">
-                                <p>人气</p>
+                                <img src={require("../../static/images/diamond@3.png")} alt="" />
+                                <p>闪耀蓝钻</p>
                                 <p>100元</p>
                             </div>
                             <div className="money-content">
                                 <div className="money-text">
-                                    <p>内容：100元120人气</p>
+                                    <p>内容：<strong>120</strong> 闪耀蓝钻</p>
                                     <p>金额：100元</p>
                                 </div>
                                 <p className="pay-button" onClick={() => {

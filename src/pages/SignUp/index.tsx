@@ -121,7 +121,6 @@ class SignUp extends React.Component<IProps, IState>{
                     success: false,
                     voteNum: this.props.itemData.entryCharge,
                     onTobepaidClose: () => {
-                        alert("close")
                         this.props.updateTobepaid && this.props.updateTobepaid(false);
                         this.onWeixinJSBridge();
                     }
@@ -159,6 +158,7 @@ class SignUp extends React.Component<IProps, IState>{
             orderType: "1",
             voteNum: this.props.itemData.entryCharge
         });
+
         if (r == '0') {
             this.setState({
                 dialogData: {
@@ -171,7 +171,7 @@ class SignUp extends React.Component<IProps, IState>{
             })
             this.props.updateDialog && this.props.updateDialog(true);
         }
-        else {
+        if (r == '1') {
             this.setState({
                 dialogData: {
                     img: "",
@@ -183,6 +183,7 @@ class SignUp extends React.Component<IProps, IState>{
             })
             this.props.updateDialog && this.props.updateDialog(true);
         }
+
     }
 
     constructor(props: IProps, context: IState) {
@@ -220,10 +221,16 @@ class SignUp extends React.Component<IProps, IState>{
                 success: false,
                 voteNum: 0,
                 shareImg: false,
-                onTobepaidClose: () => { }
+                onTobepaidClose: () => {
+                }
             }
         };
         this.props.updateDialog && this.props.updateDialog(false);
+    }
+
+    componentDidMount() {
+    }
+    componentWillMount() {
     }
 
 
@@ -288,7 +295,7 @@ class SignUp extends React.Component<IProps, IState>{
                         this.state.isTeam === 2 ? <Team  {...status} /> : <Personal {...status} />
                     }
                     <div className="activity-price">
-                        活动费用：{this.props.itemData.entryCharge}元
+                        活动费用：{this.props.itemData.entryCharge / 100}元
                     </div>
                     <div className="explanation">
                         <div className="explanation-text">费用说明</div>

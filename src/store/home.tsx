@@ -63,7 +63,6 @@ export class Home {
             }
         )
         runInAction(() => {
-            console.log(data);
             this.itemData = data.itemInfo;
         });
     }

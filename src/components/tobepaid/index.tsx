@@ -14,7 +14,6 @@ interface IProps {
     onTobepaidClose?(): void,
     onCloseClick?(): void,
     updateTobepaid?(b: boolean): void,
-    weChatPay?(obj: object): string,
     updateDialog?(b: boolean): void,
 }
 function closest(el, selector) {
@@ -61,63 +60,6 @@ class Tobepaid extends React.Component<IProps> {
         }
     }
 
-    onWeixinJSBridge() {
-        //@ts-ignore
-        if (typeof window.WeixinJSBridge == "undefined") {
-            if (document.addEventListener) {
-                document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
-                //@ts-ignore
-            } else if (document.attachEvent) {
-                //@ts-ignore
-                document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady);
-                //@ts-ignore
-                document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
-            }
-        } else {
-            this.onBridgeReady();
-        }
-    }
-
-    onBridgeReady = async () => {
-        this.props.updateTobepaid && this.props.updateTobepaid(false);
-        const r = this.props.weChatPay && await this.props.weChatPay({
-            tid: window.localStorage.getItem("tid"),
-            uid: window.localStorage.getItem('sfzvoteuid'),
-            tuid: "",
-            openId: window.localStorage.getItem('sfzvoteappId'),
-            orderType: "1",
-            voteNum: this.props.voteNum
-        });
-        this.props.updateDialog && this.props.updateDialog(false);
-        alert(r);
-        if (r == '0') {
-            alert('恭喜您！报名成功')
-            // this.setState({
-            // dialogData: {
-            //     img: "",
-            //     title: "恭喜您！报名成功",
-            //     shareImg: false,
-            //     content: "1-2个工作日审核通过后，会在投票页显示，并发送短信提示哦~",
-            //     success: true
-            // }
-            // })
-            // this.props.updateDialog && this.props.updateDialog(true);
-        }
-        else {
-            // alert('报名失败！')
-            // this.setState({
-            //     dialogData: {
-            //         img: "",
-            //         title: "报名失败",
-            //         shareImg: false,
-            //         content: "请支付订单",
-            //         success: false
-            //     }
-            // })
-            // this.props.updateDialog && this.props.updateDialog(true);
-        }
-    }
-
     render() {
         const { success, title, content, shareImg } = this.props;
         return (
@@ -152,7 +94,7 @@ class Tobepaid extends React.Component<IProps> {
                                     <span className="buyGl" onClick={() => {
                                         this.props.updateTobepaid && this.props.updateTobepaid(false);
                                         // this.onWeixinJSBridge();
-                                        this.props.onTobepaidClose;
+                                        this.props.onTobepaidClose && this.props.onTobepaidClose();
                                     }}>去支付</span>
                                     <span onClick={() => {
                                         this.props.updateTobepaid && this.props.updateTobepaid(false);
@@ -170,6 +112,5 @@ class Tobepaid extends React.Component<IProps> {
 
 export default inject(({ dialog, pay }) => ({
     updateTobepaid: dialog.updateTobepaid,
-    weChatPay: pay.weChatPay,
     updateDialog: dialog.updateDialog,
 }))(observer(Tobepaid));
