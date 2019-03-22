@@ -35,15 +35,13 @@ class Pay {
                 },
                 function (res) {
                     if (res.err_msg == "get_brand_wcpay_request:ok") {
-                        alert('恭喜您！报名成功');
-                        return "0";
+                        alert('支付成功');
                     } else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
                         alert('您已取消支付');
                     }
                     else if (res.err_msg == 'get_brand_wcpay_request:cancel') {
                         alert('支付失败');
                     }
-
                 });
         });
     }

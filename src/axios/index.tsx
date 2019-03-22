@@ -7,8 +7,8 @@ console.log(process.env.NODE_ENV);
 
 if (process.env.NODE_ENV == 'development') {
     // axios.defaults.baseURL = "http://192.168.0.166:8080/timeVoting";
-    // axios.defaults.baseURL = "https://www.nihaotime.com/timeVoting/";
-    axios.defaults.baseURL = "https://www.10fangzhou.com/timeVoting/";
+    axios.defaults.baseURL = "https://www.nihaotime.com/timeVoting/";
+    // axios.defaults.baseURL = "https://www.10fangzhou.com/timeVoting/";
 } else {
     axios.defaults.baseURL = "https://www.10fangzhou.com/timeVoting/";
     // axios.defaults.baseURL = "http://192.168.0.146:8080/timeVoting/";

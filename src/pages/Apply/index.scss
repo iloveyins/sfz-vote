@@ -19,12 +19,12 @@
           height: px2rem(230px);
           width: px2rem(230px);
           background-size: 100% 100%;
-          background-image: url("../../static/images/money-bg.png");
+          // background-image: url("../../static/images/money-bg.png");
           img:first-child {
             // margin: 0 px2rem(15px);
             padding: px2rem(20px) 0 px2rem(5px) 0;
-            width: px2rem(96px);
-            height: px2rem(100px);
+            width: 100%;
+            height: 100%;
           }
           p:first-child {
             font-size: px2rem(24px);
@@ -33,7 +33,7 @@
             font-size: px2rem(28px);
             margin: px2rem(10px) px2rem(20px);
             padding-top: px2rem(10px);
-            border-top: dashed px2rem(2px) rgba(253, 204, 150, 1);
+            // border-top: dashed px2rem(2px) rgba(253, 204, 150, 1);
           }
         }
         .money-content {
@@ -44,7 +44,7 @@
           width: px2rem(300px);
           .money-text {
             font-size: px2rem(28px);
-            margin-top: px2rem(25px);
+            margin-top: px2rem(65px);
             p:last-child {
               margin-top: px2rem(10px);
             }
