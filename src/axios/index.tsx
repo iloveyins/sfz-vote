@@ -12,6 +12,7 @@ if (process.env.NODE_ENV == 'development') {
 } else {
     axios.defaults.baseURL = "https://www.10fangzhou.com/timeVoting/";
     // axios.defaults.baseURL = "http://192.168.0.146:8080/timeVoting/";
+    //  axios.defaults.baseURL = "https://www.nihaotime.com/timeVoting/";
 }
 
 const http = axios.create({

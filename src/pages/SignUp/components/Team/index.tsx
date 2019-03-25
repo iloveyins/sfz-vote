@@ -47,7 +47,6 @@ export default class Personal extends React.Component<IProps, IState> {
             hasError: false,
             files: data,
             value: '',
-
             phone: '',
             code: '',
             name: '',
@@ -59,7 +58,6 @@ export default class Personal extends React.Component<IProps, IState> {
             codeHasError: false,
             nameHasError: false,
             imgHasError: false,
-
             statusError: [],
             ageBracket: ['1'],
         };
@@ -77,7 +75,7 @@ export default class Personal extends React.Component<IProps, IState> {
 
     //验证验证码
     onErrorCode() {
-        let count = 5;
+        let count = 60;
         if (this.onError(this.state.phone, 2)) {
 
             this.props.sendCaptcha({ sendType: 6, phoneNum: this.state.phone.replace(/\s+/g, "") });
@@ -109,7 +107,8 @@ export default class Personal extends React.Component<IProps, IState> {
                 this.setState({ code: value });
                 break;
             case 2:  //手机号码验证
-                if (value.replace(/\s/g, '').length < 11) {
+                var phoneReg = /^1[3456789]\d{9}$/;
+                if (!phoneReg.test(value.replace(/\s+/g, ""))) {
                     this.setState({ phoneHasError: true, statusError: this.state.statusError.filter(i => i != 2) });
                     ret = false;
                 } else {
@@ -119,7 +118,8 @@ export default class Personal extends React.Component<IProps, IState> {
                 this.setState({ phone: value });
                 break;
             case 3:  //团队名称
-                if (value.length < 1) {
+                var nameReg = /^[a-zA-Z\u4e00-\u9fa5 ]{1,20}$/;
+                if (!nameReg.test(value)) {
                     this.setState({ nameHasError: true, statusError: this.state.statusError.filter(i => i != 3) });
                     ret = false;
                 } else {

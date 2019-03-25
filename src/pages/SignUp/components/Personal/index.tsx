@@ -86,7 +86,7 @@ export default class Personal extends React.Component<IProps, IState> {
 
     //发送验证码
     onErrorCode() {
-        let count = 5;
+        let count = 60;
         if (this.onError(this.state.phone, 2)) {
 
             this.props.sendCaptcha({ sendType: 6, phoneNum: this.state.phone.replace(/\s+/g, "") });
@@ -118,9 +118,9 @@ export default class Personal extends React.Component<IProps, IState> {
                 this.setState({ code: value });
                 break;
             case 2:  //手机号码验证
-                if (value.replace(/\s/g, '').length < 11) {
+                var phoneReg = /^1[3456789]\d{9}$/;
+                if (!phoneReg.test(value.replace(/\s+/g, ""))) {
                     this.setState({ phoneHasError: true, statusError: this.state.statusError.filter(i => i != 2) });
-
                     ret = false;
                 } else {
                     this.setState({ phoneHasError: false, statusError: this.state.statusError.concat(2) });
@@ -129,7 +129,8 @@ export default class Personal extends React.Component<IProps, IState> {
                 this.setState({ phone: value });
                 break;
             case 3:  //姓名
-                if (value.length < 1) {
+                var nameReg = /^[\u4E00-\u9FA5]{2,4}$/;
+                if (!nameReg.test(value)) {
                     this.setState({ nameHasError: true, statusError: this.state.statusError.filter(i => i != 3) });
                     ret = false;
                 } else {
