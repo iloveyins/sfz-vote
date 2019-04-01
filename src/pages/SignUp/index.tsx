@@ -299,8 +299,7 @@ class SignUp extends React.Component<IProps, IState>{
                     </div>
                     <div className="explanation">
                         <div className="explanation-text">费用说明</div>
-                        <p>
-                            {this.props.itemData.activityRule}
+                        <p dangerouslySetInnerHTML={{ __html: this.props.itemData.activityRule }}>
                         </p>
                     </div>
                     <button

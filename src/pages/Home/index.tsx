@@ -7,6 +7,7 @@ import { wxInit } from '../../utils/wxShare.js';
 import { inject, observer } from 'mobx-react';
 import { Home as HomeStore } from '../../store/home';
 import { Loading } from '../../components/index'
+import { List, TextareaItem } from 'antd-mobile';
 
 
 interface IProps extends RouteComponentProps {
@@ -181,7 +182,9 @@ class Home extends React.Component<IProps, IState>{
                         <span className="text">活动规则</span>
                     </div>
                     <p dangerouslySetInnerHTML={{ __html: itemData.activityNotice }}>
+
                     </p>
+
                 </div>
             </div>
         )
